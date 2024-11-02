@@ -5,12 +5,13 @@
     class ModeloFornecedor {
 
         public $id;
+        public $cnpj;
         public $pessoa;
         public $item;
-        public $cnpj;
 
-  function __construct( $id,  ModeloItem $item,  ModeloPessoa $pessoa, $cnpj) {
+  function __construct( $id, $cnpj, ModeloItem $item,  ModeloPessoa $pessoa) {
             $this->id = $id;
+            $this->cnpj = $cnpj;
             $this->item = $item;
             $this->pessoa = $pessoa;
         }
