@@ -146,7 +146,7 @@
 
             } else {
                 
-                $proprietario = new ModeloPropriedade( null, $dados['cnpj'], $dao->buscarBanca($dados['banca']), $dao->buscarPessoa($dados['pessoa']) );
+                $proprietario = new ModeloPropriedade( null, $dados['cnpj'], $dao->buscarPessoa($dados['pessoa']),$dao->buscarBanca($dados['banca']) );
             }
             $proprietario = $dao->salvarProprietario( $proprietario );
             return $this->listarProprietarios();
