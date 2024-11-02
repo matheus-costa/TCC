@@ -1,24 +1,18 @@
 <?php
-      include_once '../Model/ModeloProprietario.php';
+      include_once '../Model/ModeloPropriedade.php';
+      include_once '../Model/ModeloPessoa.php';
+
 
     class ModeloFuncionario {
 
         public $id;
-        public $nome;
-        public $cpf;
-        public $rg;
-        public $email;
-        public $telefone;
-        public $proprietarioChefe;
+        public $pessoa;
+        public $trabalho;
 
 
-        function __construct( $id, $nome, $cpf, $rg, $email, $telefone, ModeloProprietario $proprietarioChefe ) {
+        function __construct( $id,  ) {
             $this->id = $id;
             $this->nome = $nome;
-            $this->cpf = $cpf;
-            $this->rg = $rg;
-            $this->email = $email;
-            $this->telefone = $telefone;
-            $this->proprietarioChefe = $proprietarioChefe;
+          
         }
     }
