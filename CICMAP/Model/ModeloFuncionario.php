@@ -1,5 +1,5 @@
 <?php
-      include_once '../Model/ModeloPropriedade.php';
+      include_once '../Model/ModeloTrabalho.php';
       include_once '../Model/ModeloPessoa.php';
 
 
@@ -10,9 +10,10 @@
         public $trabalho;
 
 
-        function __construct( $id,  ) {
+        function __construct( $id, ModeloTrabalho $trabalho, ModeloPessoa $pessoa ) {
             $this->id = $id;
-            $this->nome = $nome;
+            $this->pessoa = $pessoa;
+            $this->trabalho = $trabalho;
           
         }
     }
