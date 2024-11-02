@@ -8,7 +8,7 @@
         public $item;
         public $pessoa;
 
-        function __construct( $id, ModeloItem $item) {
+        function __construct( $id, ModeloItem $item, ModeloPessoa $pessoa) {
             $this->id = $id;
             $this->item = $item;
             $this->pessoa = $pessoa;
