@@ -346,10 +346,10 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function buscarProprietario( $id ) {
-            $sql = "select  id, cnpj, banca, pessoa from propriedade where id = '$id';";
+            $sql = "select  id, cnpj, pessoa, banca from propriedade where id = '$id';";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $proprietario = new ModeloPropriedade( $resultado[0]['id'],
-            $resultado[0]['cnpj'], $this->buscarBanca($resultado[0]['banca']), $this->buscarPessoa($resultado[0]['pessoa']) );
+            $resultado[0]['cnpj'], $this->buscarPessoa($resultado[0]['pessoa']), $this->buscarBanca($resultado[0]['banca']) );
 
             //$proprietario = new ModeloPropriedade( $resultado[0]['id'],$resultado[0][' p.nome'], $resultado[0][' p.cpf'], $resultado[0]['p.rg'],$resultado[0]['p.email'],$resultado[0][' p.telefone'],$resultado[0]['p.endereco'],$resultado[0]['b.nome'],$resultado[0][' b.numeracao']);
 
@@ -358,7 +358,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
        
         function buscarProprietarios() {
 
-            $sql = "select  id, cnpj, banca, pessoa from propriedade order by cnpj; ";
+            $sql = "select  id, cnpj, pessoa, banca from propriedade order by cnpj; ";
 
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $proprietarios = [];
@@ -369,13 +369,14 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return $proprietarios;
         }
 
-        function salvarProprietario( ModeloPropriedade $propriedade, ModeloPessoa $pessoa, ModeloBanca $banca ) {
+        function salvarProprietario( ModeloPropriedade $propriedade ) {
             if ( is_null( $propriedade->id ) ) {
-                $id = $propriedade->id;
-                $pessoa = $propriedade->pessoa;
-                $pid = $pessoa -> id;
-                $banca = $propriedade->banca;
-                $bid = $banca -> id;
+                $id = $propriedade->id;#proprietário ID
+                $pessoa = $propriedade->pessoa;#pessoa que é proprietário
+                $pid = $pessoa -> id;#pessoa ID
+                $banca = $propriedade->banca;#banca do proprietário
+                $bid = $banca -> id;#banca ID
+
                 $cnpj = $propriedade -> cnpj;
                 $nome = $pessoa ->nome;
                 $cpf = $pessoa ->cpf;
@@ -387,19 +388,19 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $numeracao = $banca ->numeracao;
 
                 $sql = " insert into propriedade values (null,$cnpj, $pid, $bid) returning id; ";
-                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email','$telefone','$endereco') returnig pid;";
+                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email',          '$telefone','$endereco') returnig pid;";
+                
                 $sqlThree = "insert into banca values ('null','$nomeBanca','$numeracao') returning bid;";
 
                 $id = $this->conexao->query( $sql, $sqlTwo, $sqlThree )->fetchAll(2)[0]['id'];
             } else {
                 $id = $propriedade->id;
-                $bid = $banca -> id;
-                $pid = $pessoa -> id;
+                $cnpj = $propriedade -> cnpj;
 
                 $sql = " update propriedade set cnpj = '$cnpj' where id = '$id'; ";
-                $sqlTwo = " update pessoa set nome = '$nome', cpf = '$cpf', rg = '$rg', email = '$email', telefone ='$telefone', endereco ='$endereco' where id = '$pid'; ";
+               # $sqlTwo = " update pessoa set nome = '$nome', cpf = '$cpf', rg = '$rg', email = '$email', telefone ='$telefone', endereco ='$endereco' where id = '$pid'; ";
 
-                $sqlThree = " update banca set nome = '$nomeBanca', numeracao = '$numeracao' where id = '$bid'; ";
+                #$sqlThree = " update banca set nome = '$nomeBanca', numeracao = '$numeracao' where id = '$bid'; ";
 
                 $this->conexao->exec( $sql );
             }
@@ -462,7 +463,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
         
         function buscarPessoa( $id ) {
-            $sql = " select id, pessoa, item from venda where id = '$id'; ";
+            $sql = " select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $pessoa = new ModeloPessoa($resultado[0]['id'], $resultado['nome'], $resultado['cpf'], 
             $resultado['rg'], $resultado['email'], $resultado['telefone'], $resultado['endereco']  );
@@ -471,36 +472,40 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function buscarPessoas($id) {
-            $sql = " select id from venda order by pessoa.id; ";
+            $sql = " select id from pessoa order by nome; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $vendas = [];
+            $pessoas = [];
             foreach ( $resultado as $tupla ) {
-                $vendas[] = $this->buscarVenda( $tupla['id'] );
+                $pessoas[] = $this->buscarPessoa( $tupla['id'] );
             }
-            return $vendas;
+            return $pessoas;
         }
 
-        function salvarPesooa( ModeloVenda $venda ) {
-            $item = $venda->item;
-            $Iid = $item->id;
-            $pessoa = $venda->pessoa;
-            $pid = $pessoa->id;
+        function salvarPessoa( ModeloPessoa $pessoa ) {
 
-            if ( is_null( $venda->id ) ) {
-                $sql = " insert into venda values () returning id; ";
+            $id = $pessoa->id;
+            $nome = $pessoa->nome;
+            $cpf = $pessoa->cpf;
+            $rg = $pessoa->rg;
+            $email = $pessoa->email;
+            $telefone = $pessoa->telefone;
+            $endereco = $pessoa->endereco;
+
+            if ( is_null( $pessoa->id ) ) {
+                $sql = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
-                $id = $venda->id;
-                $sql = " update venda set  ";
+                $id = $pessoa->id;
+                $sql = " update pessoa set where nome = '$nome',cpf = '$cpf',rg = '$rg',email = '$email',telefone = '$telefone',endereco = '$endereco' id = '$id' ";
                 $this->conexao->exec( $sql );
             }
-            $atleta = $this->buscarAtleta($id);
-            return $atleta;
+            $pessoa = $this->buscarPessoa($id);
+            return $pessoa;
         }
 
-        function removerPessoa ( ModeloVenda $venda ) {
-            $id = $venda->id;
-            $sql = " delete from venda where id = '$id'; ";
+        function removerPessoa ( ModeloPessoa $pessoa ) {
+            $id = $pessoa->id;
+            $sql = " delete from pessoa where id = '$id'; ";
             $this->conexao->exec($sql);
             return null;
         }

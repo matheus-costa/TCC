@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
     //var_dump (getcwd());
     //exit;
@@ -34,7 +35,6 @@
         function listarBancas() {
             // Cria uma instância de ObjetoAcessoDados passando a conexão
             $dao = new ObjetoAcessoDados( $this->conexao );
-
             // Busca os bancas através do DAO
             $bancas = $dao->buscarBancas();
             // Cria uma instância de VisaoBanca para renderizar a saída
@@ -205,4 +205,4 @@
             return $visao->cabecalho . $visao->cadastrarVendas( $venda ) . $visao->rodape;
         }
 
-    }
+}
