@@ -5,11 +5,11 @@
 
         public $id;
         public $pessoa;
-
-        
-
-        function __construct( $id ,ModeloPessoa $pessoa ) {
+        public $venda;
+        function __construct( $id ,ModeloPessoa $pessoa, ModeloVenda $venda ) {
+            $this->id = $id;
             $this->pessoa = $pessoa;
+            $this->venda = $venda;
 
         }
     }
