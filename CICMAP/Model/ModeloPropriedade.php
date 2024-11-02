@@ -6,13 +6,14 @@
 
         public $id;
         public $cnpj;
-        public $banca;
         public $pessoa;
+        public $banca;
 
-        function __construct( $id, $cnpj, ModeloBanca $banca, ModeloPessoa $pessoa) {
+
+        function __construct( $id, $cnpj, ModeloPessoa $pessoa, ModeloBanca $banca) {
             $this->id = $id;
             $this->cnpj = $cnpj;
-            $this->banca = $banca;
             $this->pessoa = $pessoa;
-        }
+            $this->banca = $banca;
+        }    
     }
