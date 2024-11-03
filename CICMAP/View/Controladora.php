@@ -204,4 +204,42 @@
             return $visao->cabecalho . $visao->cadastrarVendas( $venda ) . $visao->rodape;
         }
 
+        function listarFuncionarios() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $funcionarios = $dao->buscarFuncionarios();
+            $visao = new VisaoFuncionario();
+            return $visao->cabecalho . $visao->listarFuncionarios( $funcionarios ) . $visao->rodape;
+        }
+
+        function salvarFuncionarios( $dados ) {
+
+            $dao = new ObjetoAcessoDados( $this->conexao );
+
+            if ( isset($dados['id']) ) {
+                $funcionario = $dao->buscarFuncionario( $dados['id'] );
+                $funcionario->banca = $dados['banca'];
+                $funcionario->pessoa = $dados['pessoa'];
+
+            } else {
+                $funcionario = new ModeloTrabalho(null, $dados['banca'], $dados['pessoa']);
+            }
+            $funcionario = $dao->salvarFuncionario( $funcionario );
+            return $this->listarFuncionarios();
+        }
+
+        function removerFuncionario ( $dados ){
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $funcionario = $dao->buscarFuncionario( $dados['id'] );
+            $dao->removerFuncionario( $funcionario );
+            return $this->listarFuncionarios();
+        }
+
+        function cadastrarFuncionarios() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $visao = new VisaoFuncionario();
+            $funcionario = $dao->buscarFuncionarios();
+            return $visao->cabecalho . $visao->cadastrarFuncionarios( $funcionario ) . $visao->rodape;
+        }
+
+
 }
