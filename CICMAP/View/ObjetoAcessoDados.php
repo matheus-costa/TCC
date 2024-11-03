@@ -45,7 +45,6 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return $bancas; // Retorna o array `$bancas` com todas as bancas encontradas.
         } // Fecha a função `buscarBancas`.
         
-
         function salvarBanca( ModeloBanca $banca ) {
            
             if ( is_null( $banca->id ) ) {
@@ -463,15 +462,14 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
         
         function buscarPessoa( $id ) {
-            $sql = " select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
+            $sql = "select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $pessoa = new ModeloPessoa($resultado[0]['id'], $resultado['nome'], $resultado['cpf'], 
-            $resultado['rg'], $resultado['email'], $resultado['telefone'], $resultado['endereco']  );
+            $pessoa = new ModeloPessoa($resultado[0]['id'], $resultado[0]['nome'], $resultado[0]['cpf'], $resultado[0]['rg'], $resultado[0]['email'], $resultado[0]['telefone'], $resultado[0]['endereco']  );
 
             return $pessoa;
         }
 
-        function buscarPessoas($id) {
+        function buscarPessoas() {
             $sql = " select id from pessoa order by nome; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $pessoas = [];
@@ -492,7 +490,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $endereco = $pessoa->endereco;
 
             if ( is_null( $pessoa->id ) ) {
-                $sql = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
+                $sql = "insert into pessoa values (default, $nome, $cpf, $rg, $email, $telefone,$endereco) returning id; ";
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $pessoa->id;
@@ -505,7 +503,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
         function removerPessoa ( ModeloPessoa $pessoa ) {
             $id = $pessoa->id;
-            $sql = " delete from pessoa where id = '$id'; ";
+            $sql = "delete from pessoa where id = '$id'; ";
             $this->conexao->exec($sql);
             return null;
         }

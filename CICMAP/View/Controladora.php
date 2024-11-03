@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
     //var_dump (getcwd());
     //exit;
@@ -93,7 +92,7 @@
             $dao = new ObjetoAcessoDados( $this->conexao );      
             $produtos = $dao->buscarProdutos();         
             $visao = new VisaoProduto();
-            return  $visao->listarProdutos($produtos);
+            return  $visao->cabecalho . $visao->listarProdutos($produtos) . $visao->rodape;
         }
      
         function salvarProduto( $dados ) {
