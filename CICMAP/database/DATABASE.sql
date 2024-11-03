@@ -1,7 +1,7 @@
 create table banca(
     id serial primary key,
-    nome varchar,
-    numeracao varchar
+    nome varchar NOT NULL,
+    numeracao varchar NOT NULL
 );
 
 create table pessoa(
@@ -92,8 +92,12 @@ select * from fornecedor;
 select * from pessoa;
 select * from produto;
 
+select from propriedade pr
+       join pessoa pe
+	   on propriedade.pessoa = pe.id
+	        where pessoa.id = 1 ;
 
-
+delete from propriedade where id = 1;
 --Mostra o nome do produto que foi vendido para um único cliente
 select p.nome
        from venda v
@@ -174,8 +178,12 @@ select p.nome as NomeProduto, p.marca, p.preco, p.tamanho,
 			 join banca ba
 			   on c.banca = ba.id 
 			 order by pe.nome;			 
+--
+ select id, nome, cpf, rg, email,
+        telefone, endereco 
+        from pessoa 
+		 where id = 1;
 
 
-
-			
+select id from pessoa order by nome;
         
