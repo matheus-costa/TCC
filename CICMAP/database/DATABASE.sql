@@ -5,39 +5,45 @@ create table banca(
 );
 
 create table pessoa(
-	id serial primary key,
-	nome varchar(200),
-	cpf varchar,
-	rg varchar,
-	email varchar,
-	telefone varchar,
-	endereco varchar
+	id serial primary key NOT NULL,
+	nome varchar(200) NOT NULL,
+	cpf varchar NOT NULL,
+	rg varchar NOT NULL,
+	email varchar NOT NULL,
+	telefone varchar NOT NULL,
+	endereco varchar NOT NULL
 );
 
 create table fornecedor (
-    id serial primary key,
-	cnpj varchar,
+    id serial primary key NOT NULL,
+	cnpj varchar NOT NULL,
     pessoa integer references pessoa(id)
 );
 
 CREATE TABLE produto(  
-    id serial primary key,
-    nome varchar(200),
-    tamanho varchar,
-    marca varchar,
-    preco varchar
+    id serial primary key NOT NULL,
+    nome varchar(200) NOT NULL,
+    tamanho varchar NOT NULL,
+    marca varchar NOT NULL,
+    preco varchar NOT NULL
+);
+
+create table item( 
+    id serial primary key NOT NULL,
+    fornecedor integer references fornecedor(id),
+    banca integer references banca(id),
+    produto integer references produto(id)
 );
 
 
-
 create table venda(
-    id serial primary key,
+    id serial primary key NOT NULL,
     pessoa integer references pessoa(id),
     item integer references item(id)
 );
 
 create table trabalho(
-    id serial primary key,
+    id serial primary key NOT NULL,
     pessoa integer references pessoa(id),
     banca integer references banca(id)
 
@@ -45,16 +51,10 @@ create table trabalho(
  
 
 create table propriedade( 
-    id serial primary key,
-	cnpj varchar,
+    id serial primary key NOT NULL,
+	cnpj varchar NOT NULL,
     pessoa integer references pessoa(id),
     banca integer references banca(id)
-);
-create table item( 
-    id serial primary key,
-    fornecedor integer references fornecedor(id),
-    banca integer references banca(id),
-    produto integer references produto(id)
 );
 
 --DROP TABLE trabalho CASCADE;
@@ -80,7 +80,8 @@ insert into item values ('1','1', '1', '5');
 insert into propriedade values ('2','123456778', '1', '1');
 --insert de uma venda para um cliente
 insert into venda values (default, '1', '1');
-
+--Insert de um funcionario
+insert into trabalho values (default, '1','1');
 
 --SELECT 
 select * from banca;
