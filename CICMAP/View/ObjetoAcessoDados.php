@@ -6,7 +6,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
     include_once '../Model/ModeloBanca.php';
     include_once '../Model/ModeloCliente.php';
     include_once '../Model/ModeloFornecedor.php';
-    include_once '../Model/ModeloFuncionario.php';
+    include_once '../Model/ModeloTrabalho.php';
     include_once '../Model/ModeloProduto.php';
     include_once '../Model/ModeloPropriedade.php';
     include_once '../Model/ModeloVenda.php';
@@ -227,15 +227,15 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return null;
         }
         function buscarFuncionario( $id ) {
-            $sql = " select id, nome, cpf, rg, email, telefone, proprietario_chefe from funcionario where id = '$id'; ";
+            $sql = " select id, pessoa, banca from trabalho where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $funcionario = new ModeloFuncionario( $resultado[0]['id'], $resultado[0]['nome'], $resultado[0]['cpf'], $resultado[0]['rg'], $resultado[0]['email'], $resultado[0]['telefone'], $resultado[0]['proprietario_chefe'] );
+            $funcionario = new ModeloTrabalho( $resultado[0]['id'], $resultado[0]['pessoa'], $resultado[0]['banca'] );
 
             return $funcionario;
         }
         function buscarFuncionarios() {
 
-            $sql = " select id, nome, cpf, rg, email, telefone, proprietario_chefe from funcionario order by nome; ";
+            $sql = " select id, pessoa, banca from trabalho order by id; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $funcionarios = [];
             foreach ( $resultado as $tupla ) {
@@ -243,52 +243,43 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             }
             return $funcionarios;
         }      
-        function salvarFuncionario( ModeloFuncionario $funcionario ) {
+        function salvarFuncionario( ModeloTrabalho $funcionario ) {
             if ( is_null( $funcionario->id ) ) {
-                $nome = $funcionario->nome;
-                $cpf = $funcionario->cpf;
-                $rg = $funcionario->rg;
-                $email = $funcionario->email;
-                $telefone = $funcionario->telefone;
-                $proprietarioChefe = $funcionario->proprietarioChefe;
+                $id = $funcionario->id;
+                $pessoa = $funcionario->pessoa;
+                $pid = $pessoa -> id;
+                $banca = $funcionario->banca;
+                $bid = $banca -> id;
+
+                $nome = $pessoa->nome;
+                $cpf = $pessoa->cpf;
+                $rg = $pessoa->rg;
+                $email = $pessoa->email;
+                $telefone = $pessoa->telefone;
+                $endereco = $pessoa->endereco;
+
+                $nomeBanca = $banca ->nome;
+                $numeracao = $banca ->numeracao;
                 
-                // Monta a query SQL para inserir o clube e retornar o ID
-                $sql = " insert into funcionario values (null, '$nome','$cpf','$rg','$email', '$telefone','$proprietarioChefe') returning id; ";
+                $sql = " insert into trabalho values (null, '$pid','$bid') returning id; ";
+                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email',          '$telefone','$endereco') returnig pid;";
+                
+                $sqlThree = "insert into banca values ('null','$nomeBanca','$numeracao') returning bid;";
 
-                // Executa a query e obtém o ID gerado
-                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
+                $id = $this->conexao->query( $sql ,$sqlTwo ,$sqlThree )->fetchAll(2)[0]['id'];
             } else {
-                $id =  $funcionario->id;
-                $nome = $funcionario->nome;
-                $cpf = $funcionario->cpf;
-                $rg = $funcionario->rg;
-                $email = $funcionario->email;
-                $telefone = $funcionario->telefone;
-
-                $proprietarioChefe = $funcionario->proprietarioChefe; 
-             
-                // Monta a query SQL para atualizar o clube existente
-                $sql = " update funcionario set nome = '$nome', cpf = '$cpf', rg = '$rg', email = '$email', telefone = '$telefone',   $proprietarioChefe = $proprietarioChefe; = 'proprietario_chefe'  where id = '$id'; ";
-
-                // Executa a query de atualização
+                $id =  $funcionario->id; 
+ 
+                $sql = " update trabalho set id = '$id'  where id = '$id'; ";
                 $this->conexao->exec( $sql );
             }
-
-            // Busca o clube atualizado ou recém-inserido e o retorna
             $funcionario = $this->buscarFuncionario($id);
             return $funcionario;
         }
-        function removerFuncionario ( ModeloFuncionario $funcionario ) {
-            // Obtém o ID do clube a ser removido
+        function removerFuncionario ( ModeloTrabalho $funcionario ) {
             $id = $funcionario->id;
-
-            // Monta a query SQL para deletar o clube pelo ID
-            $sql = " delete from funcionario where id = '$id'; ";
-
-            // Executa a query de remoção
+            $sql = " delete from trabalho where id = '$id'; ";
             $this->conexao->exec($sql);
-
-            // Retorna null, indicando que o clube foi removido
             return null;
         }
         function buscarProduto( $id ) {
@@ -315,7 +306,6 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
             return $produtos;
         }
-        
 
         function salvarProduto( ModeloProduto $produto) {
             $nome = $produto->nome;
@@ -456,8 +446,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $this->conexao->exec($sql);
             return null;
         }
-
-        
+ 
         function buscarPessoa( $id ) {
             $sql = " select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );

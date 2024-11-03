@@ -1,5 +1,5 @@
 <?php
-      include_once '../Model/ModeloTrabalho.php';
+      include_once '../Model/ModeloBanca.php';
       include_once '../Model/ModeloPessoa.php';
 
 
@@ -7,13 +7,13 @@
 
         public $id;
         public $pessoa;
-        public $trabalho;
+        public $banca;
 
 
-        function __construct( $id, ModeloTrabalho $trabalho, ModeloPessoa $pessoa ) {
+        function __construct( $id, ModeloBanca $banca, ModeloPessoa $pessoa ) {
             $this->id = $id;
             $this->pessoa = $pessoa;
-            $this->trabalho = $trabalho;
+            $this->banca = $banca;
           
         }
     }
