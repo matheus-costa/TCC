@@ -4,38 +4,43 @@
 
     class VisaoFuncionario extends VisaoLayout {
 
-        function listar( array $atletas ) {
+        function listarFuncionarios( array $funcionarios ) {
             $html = <<<HTML
-                <h1>Atletas</h1>
+                <h1>Funcionarios</h1>
                 <table border="1">
             HTML;
-            foreach ( $atletas as $atleta ) {
-                $clube = $atleta->clube;
+            foreach ( $funcionarios as $funcionario ) {
+                $pessoa = $funcionario->pessoa;
+                $banca = $funcionario->banca;
                 $html .= <<<HTML
                     <tr>
-                        <td>$atleta->id</td>
-                        <td>$atleta->nome</td>
-                        <td>$atleta->cpf</td>
-                        <td>$clube->nome</td>
-                        <td><a href="?acao=removerAtleta&id=$atleta->id">X</a></td>
+                        <td>$banca->nome</td>
+                        <td>$banca->numeracao</td>
+                        <td>$pessoa->nome</td>
+                        <td>$pessoa->cpf</td>
+                        <td>$pessoa->rg</td>
+                        <td>$pessoa->email</td>
+                        <td>$pessoa->telefone</td>
+                        <td>$pessoa->endereco</td>
+                        <td><a href="?acao=removerFuncionario&id=$funcionario->id">X</a></td>
                     </tr>
                 HTML;
             }
             $html .= <<<HTML
                 </table>
                 <p>
-                    <a href="?acao=cadastrarAtleta">Novo</a>
+                    <a href="?acao=cadastrarFuncionario">Novo</a>
                 </p>
             HTML;
             return $html;
         }
 
-        function cadastrar ( array $clubes ) {
+        function cadastrarfuncionarios ( array $funcionarios ) {
             $html = <<<HTML
-                <h1>Cadastrar Atleta</h1>
+                <h1>Cadastrar Funcionarios</h1>
                 <form>
                     <p>
-                        Nome <br/>
+                        Nome do Funcionario <br/>
                         <input type="text" name="nome" autocomplete="off" />
                     </p>
                     <p>
@@ -43,10 +48,32 @@
                         <input type="text" name="cpf" autocomplete="off" />
                     </p>
                     <p>
-                        <select name="clube">
-                            <option hidden>Selecione</option>
+                        RG <br/>
+                        <input type="text" name="rg" autocomplete="off" />
+                    </p>
+                    <p>
+                        E-MAIL <br/>
+                        <input type="text" name="email" autocomplete="off" />
+                    </p>
+                    <p>
+                        TELEFONE <br/>
+                        <input type="text" name="telefone" autocomplete="off" />
+                    </p>
+                    <p>
+                        ENDERECO <br/>
+                        <input type="text" name="endereco" autocomplete="off" />
+                    </p>
+                    <p>
+                        Nome da banca  <br/>
+                        <input type="text" name="nome" autocomplete="off" />
+                    </p>
+                    <p>
+                        Numeração da banca <br/>
+                        <input type="text" name="numeracao" autocomplete="off" />
+                    </p>
+                   
             HTML;
-            foreach ( $clubes as $clube ) {
+            foreach ( $funcionarios as $funcionario ) {
             $html .= <<<HTML
                             <option value="$clube->id">$clube->nome</option>
             HTML;
@@ -55,11 +82,10 @@
                         </select>
                     </p>
                     <p>
-                        <button type="submit" formmethod="post" formaction="?acao=salvarAtleta">Cadastrar</button>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarFuncionario">Cadastrar</button>
                     </p>
                 </form>
             HTML;
             return $html;
         }
-
     }
