@@ -240,5 +240,40 @@
             $funcionario = $dao->buscarFuncionarios();
             return $visao->cabecalho . $visao->cadastrarFuncionarios( $funcionario ) . $visao->rodape;
         }
+        function listarFornecedores() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $fornecedores = $dao->buscarFornecedores();
+            $visao = new VisaoFornecedor();
+            return $visao->cabecalho . $visao->listarFornecedores( $fornecedores ) . $visao->rodape;
+        }
+
+        function salvarFornecedores( $dados ) {
+
+            $dao = new ObjetoAcessoDados( $this->conexao );
+
+            if ( isset($dados['id']) ) {
+                $fornecedor = $dao->buscarfornecedores( $dados['id'] );
+         
+
+            } else {
+                $fornecedor = new ModeloFornecedor(null, $dados['banca'], $dados['pessoa']);
+            }
+            $fornecedor = $dao->salvarFornecedor( $fornecedor );
+            return $this->listarFornecedores();
+        }
+
+        function removerFornedor ( $dados ){
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $fornecedor = $dao->buscarFornecedor( $dados['id'] );
+            $dao->removerFornecedor( $fornecedor );
+            return $this->listarFornecedores();
+        }
+
+        function cadastrarFornecedores() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $visao = new VisaoFornecedor();
+            $fornecedor = $dao->buscarFornecedores();
+            return $visao->cabecalho . $visao->cadastrarFornecedor( $fornecedor ) . $visao->rodape;
+        }
 
 }
