@@ -1,16 +1,18 @@
 <?php
-    include_once 'ModeloItem.php';
+    include_once 'ModeloBanca.php';
     include_once 'ModeloPessoa.php';
 
     class ModeloTrabalho {
 
         public $id;
-        public $banca;
         public $pessoa;
+        public $banca;
+       
 
-        function __construct( $id, ModeloBanca $banca, ModeloPessoa $pessoa) {
+        function __construct( $id, ModeloPessoa $pessoa, ModeloBanca $banca) {
             $this->id = $id;
-            $this->banca = $banca;
             $this->pessoa = $pessoa;
+            $this->banca = $banca;
+            
         }
     }
