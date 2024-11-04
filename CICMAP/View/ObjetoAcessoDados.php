@@ -10,6 +10,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
     include_once '../Model/ModeloProduto.php';
     include_once '../Model/ModeloPropriedade.php';
     include_once '../Model/ModeloVenda.php';
+    include_once '../Model/ModeloItem.php';
 
    
     // Define a classe ObjetoAcessoDados
@@ -158,17 +159,17 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         } 
 
         function buscarFornecedor( $id ) {
-            $sql = " select id, nome, cpf, rg, cnpj, email, telefone, endereco, produtoFornecedor from fornecedor where id = '$id'; ";
+            $sql = " select id,  cnpj, pessoa from fornecedor where id = '$id'; ";
 
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
 
-            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['nome'], $resultado[0]['cpf'],$resultado[0]['rg'], $resultado[0]['cnpj'], $resultado[0]['email'],$resultado[0]['telefone'],$resultado[0]['endereco'], $resultado[0] ['produtoFornecedor']);
+            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['cnpj'], $this->buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
            
             return $fornecedor;
         }
 
-        function buscarFornecedores($id) {           
-            $sql = " select id, nome, cpf, rg, cnpj, email, telefone, endereco ,produtoFornecedor from fornecedor order by nome; ";
+        function buscarFornecedores() {           
+            $sql = " select id, cnpj, pessoa from fornecedor order by nome; ";
 
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
       
