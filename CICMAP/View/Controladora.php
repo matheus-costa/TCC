@@ -262,7 +262,7 @@
             return $this->listarFornecedores();
         }
 
-        function removerFornedor ( $dados ){
+        function removerFornecedor ( $dados ){
             $dao = new ObjetoAcessoDados( $this->conexao );
             $fornecedor = $dao->buscarFornecedor( $dados['id'] );
             $dao->removerFornecedor( $fornecedor );

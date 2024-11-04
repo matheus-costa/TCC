@@ -163,16 +163,14 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
 
-            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['cnpj'], $this->buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
+            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['cnpj'], $this->buscarPessoa($resultado[0]['pessoa']));
            
             return $fornecedor;
         }
 
         function buscarFornecedores() {           
-            $sql = " select id, cnpj, pessoa from fornecedor order by nome; ";
-
+            $sql = " select id, cnpj, pessoa from fornecedor order by cnpj; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-      
             $fornecedores = [];
            
             foreach ( $resultado as $tupla ) {
@@ -182,29 +180,28 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return $fornecedores;
         }
         function salvarFornecedor( ModeloFornecedor $fornecedor ) {
-
-            $nome = $fornecedor->nome;
-            $cpf = $fornecedor->cpf;
-            $rg = $fornecedor->rg;
-            $cnpj = $fornecedor->cnpj;
-            $email = $fornecedor->email;
-            $endereco = $fornecedor->endereco;
-            $telefone = $fornecedor->telefone;
-
-            $produtoFornecedor = $fornecedor->produtoFornecedor;
-            $produtoFornecedorID = $produtoFornecedor->id;
-
+            $id = $fornecedor -> id;
+            $cnpj = $fornecedor -> cnpj;
+            $pessoa = $fornecedor->pessoa;
+            $pid = $pessoa -> id;
+            $nome = $pessoa ->nome;
+            $cpf = $pessoa ->cpf;
+            $rg = $pessoa ->rg;
+            $email = $pessoa ->email;
+            $telefone = $pessoa ->telefone;
+            $endereco = $pessoa ->endereco;
+      
            
             if ( is_null( $fornecedor->id ) ) {
-                $sql = " insert into fornecedor values (null, '$nome', '$cpf','$rg','$cnpj',' $email','$endereco','$telefone','$produtoFornecedorID') returning id; ";
+                $sql = " insert into fornecedor values (default,$cnpj,$pessoa) returning id; ";
+                $sqlTwo = " insert into pessoa values (default,$nome, $cpf, $rg, $email, $telefone, $endereco) returning id; ";
 
-                
-                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
+                $id = $this->conexao->query( $sql, $sqlTwo )->fetchAll(2)[0]['id'];
             } else {
            
                 $id = $fornecedor->id;
 
-                $sql = " update fornecedor set nome = '$nome', cpf = '$cpf', rg = '$rg', cnpj = '$cnpj', email = '$email', endereco ='$endereco', telefone = '$telefone',  produto_fornecedor = '$produtoFornecedorID' where id = '$id'; ";
+                $sql = " update  where id = '$id'; ";
 
                 // Executa a query de atualização
                 $this->conexao->exec( $sql );
@@ -263,7 +260,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $numeracao = $banca ->numeracao;
                 
                 $sql = " insert into trabalho values (null, '$pid','$bid') returning id; ";
-                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email',          '$telefone','$endereco') returnig pid;";
+                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email', '$telefone','$endereco') returnig pid;";
                 
                 $sqlThree = "insert into banca values ('null','$nomeBanca','$numeracao') returning bid;";
 
@@ -375,8 +372,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $numeracao = $banca ->numeracao;
 
                 $sql = " insert into propriedade values (null,$cnpj, $pid, $bid) returning id; ";
-                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email',          '$telefone','$endereco') returnig pid;";
-                
+                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email','$telefone','$endereco') returnig pid;";
                 $sqlThree = "insert into banca values ('null','$nomeBanca','$numeracao') returning bid;";
 
                 $id = $this->conexao->query( $sql, $sqlTwo, $sqlThree )->fetchAll(2)[0]['id'];
@@ -455,7 +451,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return $pessoa;
         }
 
-        function buscarPessoas($id) {
+        function buscarPessoas() {
             $sql = " select id from pessoa order by nome; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $pessoas = [];
@@ -480,7 +476,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $pessoa->id;
-                $sql = " update pessoa set where nome = '$nome',cpf = '$cpf',rg = '$rg',email = '$email',telefone = '$telefone',endereco = '$endereco' id = '$id' ";
+                $sql = " update pessoa set where nome = '$nome',cpf = '$cpf',rg = '$rg',email = '$email',telefone = '$telefone',endereco = '$endereco' ";
                 $this->conexao->exec( $sql );
             }
             $pessoa = $this->buscarPessoa($id);

@@ -10,14 +10,13 @@
                 <table border="1">
                 <tr>
                     <th> CNPJ do Fornecedor            </th>
-                    <th> Número da Banca          </th>
-                    <th> Nome do Funcionário     </th>
-                    <th> CPF do Funcionário      </th>
-                    <th> RG do Funcionário		  </th>
-                    <th> E-mail do Funcionário	  </th>
-                    <th> Telefone do Funcionário </th>
-                    <th> Endereço do Funcionário </th>
-                    <th> Excluir  Funcionário    </th>
+                    <th> Nome do Fornecedor     </th>
+                    <th> CPF do Fornecedor      </th>
+                    <th> RG do Fornecedor		  </th>
+                    <th> E-mail do Fornecedor	  </th>
+                    <th> Telefone do Fornecedor </th>
+                    <th> Endereço do Fornecedor </th>
+                    <th> Excluir  Fornecedor    </th>
                 </tr>
             HTML;
             foreach ( $fornecedores as $fornecedor ) {
