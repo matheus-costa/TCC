@@ -63,6 +63,9 @@ insert into fornecedor values(default, '1234',default );
 insert into propriedade values (default, '12345',default, default);
 insert into pessoa values (default, 'fulano','00102223680','2245494678','fulano@gmail.com','11447895','na casa dele');
 insert into pessoa values (default, 'VeioDaHavan','00102223680','2245494678','VeioDaHavan@gmail.com','11447895','na casa dele');
+insert into pessoa values (default, 'Cliente da Silva','00102223450','224333668','Cliente@gmail.com','44588895','na casa dele');
+insert into pessoa values (default, 'funcionário da Silva','001783450','22423458','funcionario@gmail.com','44588895','na casa dele');
+
 --Insert produto normal
 insert into produto values ('1', 'Tenis','45','NIKE','100');
 insert into produto values ('3', 'Tenis','42','NIKE','100');
@@ -75,13 +78,16 @@ insert into item values ('1','1', '1', '1');
 insert into item values ('1','1', '1', '2');
 insert into item values ('1','1', '1', '3');
 insert into item values ('1','1', '1', '4');
+--Insert de um Item(id, fornecedor, banca, produto)
 insert into item values ('1','1', '1', '5');
---Insert de um proprietário
+--Insert de um proprietário(id, cnpj,pessoa,banca)
 insert into propriedade values ('2','123456778', '1', '1');
---insert de uma venda para um cliente
+--insert de uma venda para um cliente(id, pessoa, item)
 insert into venda values (default, '1', '1');
---Insert de um funcionario
+--Insert de um funcionario(id,pessoa,banca)
 insert into trabalho values (default, '1','1');
+insert into trabalho values (default, '4','1');
+
 
 --SELECT 
 select * from banca;
