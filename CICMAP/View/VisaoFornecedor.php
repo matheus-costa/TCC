@@ -4,43 +4,77 @@
 
     class VisaoFornecedor extends VisaoLayout {
 
-        function listar( array $atletas ) {
+        function listarFornecedores( array $fornecedores ) {
             $html = <<<HTML
-                <h1>Atletas</h1>
+                <h1>Fornedores</h1>
                 <table border="1">
+                <tr>
+                    <th> CNPJ do Fornecedor            </th>
+                    <th> Número da Banca          </th>
+                    <th> Nome do Funcionário     </th>
+                    <th> CPF do Funcionário      </th>
+                    <th> RG do Funcionário		  </th>
+                    <th> E-mail do Funcionário	  </th>
+                    <th> Telefone do Funcionário </th>
+                    <th> Endereço do Funcionário </th>
+                    <th> Excluir  Funcionário    </th>
+                </tr>
             HTML;
-            foreach ( $atletas as $atleta ) {
-                $clube = $atleta->clube;
+            foreach ( $fornecedores as $fornecedor ) {
+                $pessoa = $fornecedor->pessoa;
                 $html .= <<<HTML
                     <tr>
-                        <td>$atleta->id</td>
-                        <td>$atleta->nome</td>
-                        <td>$atleta->cpf</td>
-                        <td>$clube->nome</td>
-                        <td><a href="?acao=removerAtleta&id=$atleta->id">X</a></td>
+                        <td>$fornecedor->cnpj</td>
+                        <td>$pessoa->nome</td>
+                        <td>$pessoa->cpf</td>
+                        <td>$pessoa->rg</td>
+                        <td>$pessoa->email</td>
+                        <td>$pessoa->telefone</td>
+                        <td>$pessoa->endereco</td>
+                        <td><a href="?acao=removerFornecedor&id=$fornecedor->id">X</a></td>
                     </tr>
                 HTML;
             }
             $html .= <<<HTML
                 </table>
                 <p>
-                    <a href="?acao=cadastrarAtleta">Novo</a>
+                    <a href="?acao=cadastrarFornecedor">Novo</a>
                 </p>
             HTML;
             return $html;
         }
 
-        function cadastrar ( array $clubes ) {
+        function cadastrarFornecedor ( array $fornecedores ) {
             $html = <<<HTML
-                <h1>Cadastrar Atleta</h1>
+                <h1>Cadastrar Fornecedores</h1>
                 <form>
+               <p>
+                        CNPJ <br/>
+                        <input type="text" name="endereco" autocomplete="off" />
+                    </p>
                     <p>
-                        Nome <br/>
+                        Nome do Funcionario <br/>
                         <input type="text" name="nome" autocomplete="off" />
                     </p>
                     <p>
                         CPF <br/>
                         <input type="text" name="cpf" autocomplete="off" />
+                    </p>
+                    <p>
+                        RG <br/>
+                        <input type="text" name="rg" autocomplete="off" />
+                    </p>
+                    <p>
+                        E-MAIL <br/>
+                        <input type="text" name="email" autocomplete="off" />
+                    </p>
+                    <p>
+                        TELEFONE <br/>
+                        <input type="text" name="telefone" autocomplete="off" />
+                    </p>
+                    <p>
+                        ENDERECO <br/>
+                        <input type="text" name="endereco" autocomplete="off" />
                     </p>
                     <p>
                         <select name="clube">
@@ -55,7 +89,7 @@
                         </select>
                     </p>
                     <p>
-                        <button type="submit" formmethod="post" formaction="?acao=salvarAtleta">Cadastrar</button>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarFornecedores">Cadastrar</button>
                     </p>
                 </form>
             HTML;
