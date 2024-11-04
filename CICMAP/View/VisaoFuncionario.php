@@ -8,6 +8,17 @@
             $html = <<<HTML
                 <h1>Funcionarios</h1>
                 <table border="1">
+                <tr>
+                    <th> Nome da Banca            </th>
+                    <th> Número da Banca          </th>
+                    <th> Nome do Funcionário     </th>
+                    <th> CPF do Funcionário      </th>
+                    <th> RG do Funcionário		  </th>
+                    <th> E-mail do Funcionário	  </th>
+                    <th> Telefone do Funcionário </th>
+                    <th> Endereço do Funcionário </th>
+                    <th> Excluir  Funcionário    </th>
+                </tr>
             HTML;
             foreach ( $funcionarios as $funcionario ) {
                 $pessoa = $funcionario->pessoa;
