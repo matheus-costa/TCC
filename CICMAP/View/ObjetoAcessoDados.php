@@ -229,7 +229,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         function buscarFuncionario( $id ) {
             $sql = " select id, pessoa, banca from trabalho where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $funcionario = new ModeloTrabalho( $resultado[0]['id'], $resultado[0]['pessoa'], $resultado[0]['banca'] );
+            $funcionario = new ModeloTrabalho( $resultado[0]['id'], $this->buscarPessoa($resultado[0]['pessoa']), $this->buscarBanca($resultado[0]['banca']) );
 
             return $funcionario;
         }
@@ -239,7 +239,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $funcionarios = [];
             foreach ( $resultado as $tupla ) {
-                $funcionarios[] = $this->buscarFuncionarios( $tupla['id'] );
+                $funcionarios[] = $this->buscarFuncionario( $tupla['id'] );
             }
             return $funcionarios;
         }      

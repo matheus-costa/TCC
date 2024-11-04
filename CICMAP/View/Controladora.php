@@ -241,5 +241,4 @@
             return $visao->cabecalho . $visao->cadastrarFuncionarios( $funcionario ) . $visao->rodape;
         }
 
-
 }
