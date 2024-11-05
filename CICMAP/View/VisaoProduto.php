@@ -7,11 +7,17 @@
             $html = <<<HTML
                 <h1>Produtos</h1>
                 <table border="1">
+                <tr>
+                    <th> Nome do Produto            </th>
+                    <th> Tamanho do Produto     </th>
+                    <th> Marca do Produto     </th>
+                    <th> Preço do Produto		  </th>
+                    <th> Excluir Produto		  </th>
+                </tr>
             HTML;
             foreach ( $produtos as $produto ) {
                 $html .= <<<HTML
                     <tr>
-                        <td>$produto->id</td>
                         <td>$produto->nome</td>
                         <td>$produto->tamanho</td>
                         <td>$produto->marca</td>
