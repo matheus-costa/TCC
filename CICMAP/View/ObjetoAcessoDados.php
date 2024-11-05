@@ -82,31 +82,25 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                     from cliente  
                     join pessoa p
 	                on cliente.pessoa = p.id
-	                where  cliente.id = p.id; ";
+	                where  cliente.id = $id; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );       
-            $cliente = new ModeloCliente( $resultado[0]['id'], $this->buscarCliente($resultado[0]['pessoa']));
+            $cliente = new ModeloCliente( $resultado[0]['id'], $this->buscarPessoa($resultado[0]['pessoa']));
             return $cliente;
         }
         
         function buscarClientes() {
-            // Monta a query SQL para selecionar todos os clientes ordenados por nome
             $sql = "  select p.nome, p.cpf, p.rg, p.email, p.email, p.telefone, p.endereco      
                     from cliente  
                     join pessoa p
 	                on cliente.pessoa = p.id
 	                where  cliente.id = p.id
                     order by p.nome; ";
-            // Executa a query e obtém o resultado
-            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            // Cria um array vazio para armazenar os clientes
+
+                    $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $clientes = [];
-
-            // Para cada resultado, busca o cliente pelo ID e o adiciona ao array
             foreach ( $resultado as $tupla ) {
-                $clientes[] = $this->buscarClientes( $tupla['id'] );
+                $clientes[] = $this->buscarCliente( $tupla['id'] );
             }
-
-            // Retorna o array de clientes
             return $clientes;
         }
 
@@ -121,41 +115,23 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $telefone = $pessoa->telefone;
             $endereco = $pessoa->endereco;
 
-            // Se o ID do cliente for nulo, insere um novo cliente
             if ( is_null( $cliente->id ) ) {
-                // Monta a query SQL para inserir o cliente e retornar o ID
-                $sql = " insert into cliente values (null, $pid) returning id; ";
+                $sql = " insert into cliente values (default, $pid) returning id; ";
                 $sqlTwo = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
-
-                // Executa a query e obtém o ID gerado
                 $id = $this->conexao->query( $sql, $sqlTwo )->fetchAll(2)[0]['id'];
             } else {
-                // Se o cliente já existir (ID não for nulo), atualiza o cliente
                 $id = $cliente->id;
-
-                // Monta a query SQL para atualizar o atleta existente
-                $sql = " update cliente set nome = '$nome', cpf = '$cpf',rg = '$rg', email = '$email',telefone = '$telefone', endereco = '$endereco', vendaProduto = '$vendaProduto' where id = '$id'; ";
-
-                // Executa a query de atualização
+                $sql = " update cliente set pessoa = $pessoa where id = '$id'; ";
                 $this->conexao->exec( $sql );
             }
-
-            // Busca o atleta atualizado ou recém-inserido e o retorna
             $cliente = $this->buscarCliente($id);
             return $cliente;
         }
 
         function removerCliente ( ModeloCliente $cliente ) {
-            // Obtém o ID do atleta a ser removido
             $id = $cliente->id;
-
-            // Monta a query SQL para deletar o atleta pelo ID
             $sql = " delete from cliente where id = '$id'; ";
-
-            // Executa a query de remoção
             $this->conexao->exec($sql);
-
-            // Retorna null, indicando que o atleta foi removido
             return null;
         } 
 
