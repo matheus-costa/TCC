@@ -84,14 +84,11 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 	                on cliente.pessoa = p.id
 	                where  cliente.id = p.id; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );       
-            // Cria uma nova instância de ModeloAtleta com os dados retornados e o clube associado
-            $cliente = new ModeloCliente( $resultado[0]['id'], $resultado[0]['p.nome'], $resultado[0]['p.cpf'],$resultado[0]['p.rg'], $resultado[0]['p.email'], $resultado[0]['p.telefone'],$resultado[0]['p.endereco'], $this->buscarCliente($resultado[0]['pessoa']));
-
-            // Retorna o objeto atleta
+            $cliente = new ModeloCliente( $resultado[0]['id'], $this->buscarCliente($resultado[0]['pessoa']));
             return $cliente;
         }
         
-        function buscarClientes($id) {
+        function buscarClientes() {
             // Monta a query SQL para selecionar todos os clientes ordenados por nome
             $sql = "  select p.nome, p.cpf, p.rg, p.email, p.email, p.telefone, p.endereco      
                     from cliente  
@@ -114,20 +111,24 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function salvarCliente( ModeloCliente $cliente ) {
-            $nome = $cliente->nome;
-            $cpf = $cliente->cpf;
-            $rg = $cliente->rg;
-            $email = $cliente->email;
-            $telefone = $cliente->telefone;
-            $endereco = $cliente->endereco;
+            $id = $cliente -> id;
+            $pessoa = $cliente->pessoa;
+            $pid = $pessoa -> id;
+            $nome = $pessoa->nome;
+            $cpf = $pessoa->cpf;
+            $rg = $pessoa->rg;
+            $email = $pessoa->email;
+            $telefone = $pessoa->telefone;
+            $endereco = $pessoa->endereco;
 
             // Se o ID do cliente for nulo, insere um novo cliente
             if ( is_null( $cliente->id ) ) {
                 // Monta a query SQL para inserir o cliente e retornar o ID
-                $sql = " insert into cliente values (null, '$nome', '$cpf','$rg','$email', '$telefone' ,'$endereco') returning id; ";
+                $sql = " insert into cliente values (null, $pid) returning id; ";
+                $sqlTwo = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
 
                 // Executa a query e obtém o ID gerado
-                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
+                $id = $this->conexao->query( $sql, $sqlTwo )->fetchAll(2)[0]['id'];
             } else {
                 // Se o cliente já existir (ID não for nulo), atualiza o cliente
                 $id = $cliente->id;

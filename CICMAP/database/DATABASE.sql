@@ -14,6 +14,11 @@ create table pessoa(
 	endereco varchar NOT NULL
 );
 
+create table cliente(
+  id serial primary key,
+  pessoa integer references pessoa(id)
+);
+
 create table fornecedor (
     id serial primary key NOT NULL,
 	cnpj varchar NOT NULL,
@@ -59,13 +64,14 @@ create table propriedade(
 
 --DROP TABLE trabalho CASCADE;
 
-insert into fornecedor values(default, '1234',default );
+insert into fornecedor values(default, '4545', '7' );
 insert into propriedade values (default, '12345',default, default);
 insert into pessoa values (default, 'fulano','00102223680','2245494678','fulano@gmail.com','11447895','na casa dele');
 insert into pessoa values (default, 'VeioDaHavan','00102223680','2245494678','VeioDaHavan@gmail.com','11447895','na casa dele');
 insert into pessoa values (default, 'Cliente da Silva','00102223450','224333668','Cliente@gmail.com','44588895','na casa dele');
 insert into pessoa values (default, 'funcionário da Silva','001783450','22423458','funcionario@gmail.com','44588895','na casa dele');
-
+--Insert Cliente
+insert into cliente values (default, '5');
 --Insert produto normal
 insert into produto values ('1', 'Tenis','45','NIKE','100');
 insert into produto values ('3', 'Tenis','42','NIKE','100');
@@ -85,7 +91,7 @@ insert into propriedade values ('2','123456778', '1', '1');
 --insert de uma venda para um cliente(id, pessoa, item)
 insert into venda values (default, '1', '1');
 --Insert de um funcionario(id,pessoa,banca)
-insert into trabalho values (default, '1','1');
+insert into trabalho values (default, '5','1');
 insert into trabalho values (default, '4','1');
 
 
@@ -193,4 +199,5 @@ select p.nome as NomeProduto, p.marca, p.preco, p.tamanho,
 
 
 select id from pessoa order by nome;
+delete from fornecedor where cnpj = '1234';
         

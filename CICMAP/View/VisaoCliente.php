@@ -8,14 +8,27 @@
         function listarClientes( array $clientes ) {
             $html = <<<HTML
                 <h1>Clientes</h1>
+                <tr>
+                    <th> Nome do Cliente     </th>
+                    <th> CPF do Cliente      </th>
+                    <th> RG do Cliente		  </th>
+                    <th> E-mail do Cliente	  </th>
+                    <th> Telefone do Cliente </th>
+                    <th> Endereço do Cliente </th>
+                    <th> Excluir  Cliente    </th>
+                </tr>
                 <table border="1">
             HTML;
             foreach ( $clientes as $cliente ) {
+                $pessoa = $cliente->pessoa;
                 $html .= <<<HTML
                     <tr>
-                        <td>$cliente->id</td>
-                        <td>$cliente->nome</td>
-                        <td>$cliente->numeracao</td>
+                        <td>$pessoa->nome</td>
+                        <td>$pessoa->cpf</td>
+                        <td>$pessoa->rg</td>
+                        <td>$pessoa->email</td>
+                        <td>$pessoa->telefone</td>
+                        <td>$pessoa->endereco</td>
                         <td><a href="?acao=removerCliente&id=$cliente->id">X</a></td>
                     </tr>
                 HTML;
