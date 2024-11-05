@@ -275,5 +275,39 @@
             $fornecedor = $dao->buscarFornecedores();
             return $visao->cabecalho . $visao->cadastrarFornecedor( $fornecedor ) . $visao->rodape;
         }
+     
+        function listarClientes() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $clientes = $dao->buscarClientes();
+            $visao = new VisaoCliente();
+            return $visao->cabecalho . $visao->listarClientes( $clientes ) . $visao->rodape;
+        }
 
+        function salvarClientes( $dados ) {
+
+            $dao = new ObjetoAcessoDados( $this->conexao );
+
+            if ( isset($dados['id']) ) {
+                $cliente = $dao->buscarCliente( $dados['id'] );
+
+            } else {
+                $cliente = new ModeloCliente(null,$dados['pessoa']);
+            }
+            $cliente = $dao->salvarCliente( $cliente );
+            return $this->listarClientes();
+        }
+
+        function removerCliente ( $dados ){
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $cliente = $dao->buscarFornecedor( $dados['id'] );
+            $dao->removerCliente( $cliente );
+            return $this->listarClientes();
+        }
+
+        function cadastrarClientes() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $visao = new VisaoCliente();
+            $cliente = $dao->buscarClientes();
+            return $visao->cabecalho . $visao->cadastrarCliente( $cliente ) . $visao->rodape;
+        }
 }
