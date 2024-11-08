@@ -4,10 +4,10 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
     // Inclui o arquivo com a classe ModeloClube
     include_once '../Model/ModeloBanca.php';
-    include_once '../Model/ModeloCliente.php';
     include_once '../Model/ModeloFornecedor.php';
     include_once '../Model/ModeloTrabalho.php';
     include_once '../Model/ModeloProduto.php';
+    include_once '../Model/ModeloPessoa.php';
     include_once '../Model/ModeloPropriedade.php';
     include_once '../Model/ModeloVenda.php';
     include_once '../Model/ModeloItem.php';
@@ -20,7 +20,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         private $conexao;
 
         // Construtor que recebe a conexão PDO como parâmetro e atribui à variável $conexao
-        function __construct( PDO $conexao = new PDO('pgsql:host=localhost;port=5432;dbname=tcc;user=postgres;password=14122001')) {
+        function __construct( PDO $conexao = new PDO('pgsql:host=localhost;port=5432;dbname=tcc;user=postgres;password=postgres')) {
             $this->conexao = $conexao;
         }
 
@@ -76,64 +76,6 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
             return null;
         }
-
-        function buscarCliente( $id ) {
-            $sql = " select p.nome, p.cpf, p.rg, p.email, p.email, p.telefone, p.endereco      
-                    from cliente  
-                    join pessoa p
-	                on cliente.pessoa = p.id
-	                where  cliente.id = $id; ";
-            $resultado = $this->conexao->query($sql)->fetchAll( 2 );       
-            $cliente = new ModeloCliente( $resultado[0]['id'], $this->buscarPessoa($resultado[0]['pessoa']));
-            return $cliente;
-        }
-        
-        function buscarClientes() {
-            $sql = "  select p.nome, p.cpf, p.rg, p.email, p.email, p.telefone, p.endereco      
-                    from cliente  
-                    join pessoa p
-	                on cliente.pessoa = p.id
-	                where  cliente.id = p.id
-                    order by p.nome; ";
-
-                    $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $clientes = [];
-            foreach ( $resultado as $tupla ) {
-                $clientes[] = $this->buscarCliente( $tupla['id'] );
-            }
-            return $clientes;
-        }
-
-        function salvarCliente( ModeloCliente $cliente ) {
-            $id = $cliente -> id;
-            $pessoa = $cliente->pessoa;
-            $pid = $pessoa -> id;
-            $nome = $pessoa->nome;
-            $cpf = $pessoa->cpf;
-            $rg = $pessoa->rg;
-            $email = $pessoa->email;
-            $telefone = $pessoa->telefone;
-            $endereco = $pessoa->endereco;
-
-            if ( is_null( $cliente->id ) ) {
-                $sql = " insert into cliente values (default, $pid) returning id; ";
-                $sqlTwo = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
-                $id = $this->conexao->query( $sql, $sqlTwo )->fetchAll(2)[0]['id'];
-            } else {
-                $id = $cliente->id;
-                $sql = " update cliente set pessoa = $pessoa where id = '$id'; ";
-                $this->conexao->exec( $sql );
-            }
-            $cliente = $this->buscarCliente($id);
-            return $cliente;
-        }
-
-        function removerCliente ( ModeloCliente $cliente ) {
-            $id = $cliente->id;
-            $sql = " delete from cliente where id = '$id'; ";
-            $this->conexao->exec($sql);
-            return null;
-        } 
 
         function buscarFornecedor( $id ) {
             $sql = " select id,  cnpj, pessoa from fornecedor where id = '$id'; ";
