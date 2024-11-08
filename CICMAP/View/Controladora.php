@@ -3,7 +3,7 @@
     //exit;
     // Inclui o arquivo com a classe ObjetoAcessoDados
     require_once 'ObjetoAcessoDados.php';
-    //VIEWS
+    //VIEWS//
     include_once '../View/VisaoBanca.php';
     include_once '../View/VisaoCliente.php';
     include_once '../View/VisaoFornecedor.php';
@@ -13,7 +13,7 @@
     include_once '../View/VisaoLayout.php';
     //MODELS
     include_once '../Model/ModeloBanca.php';
-    include_once '../Model/ModeloCliente.php';
+    include_once '../Model/ModeloPessoa.php';
     include_once '../Model/ModeloFornecedor.php';
     include_once '../Model/ModeloTrabalho.php';
     include_once '../Model/ModeloProduto.php';
@@ -276,38 +276,38 @@
             return $visao->cabecalho . $visao->cadastrarFornecedor( $fornecedor ) . $visao->rodape;
         }
      
-        function listarClientes() {
+        function listarPessoas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
-            $clientes = $dao->buscarClientes();
+            $pessoas = $dao->buscarPessoas();
             $visao = new VisaoCliente();
-            return $visao->cabecalho . $visao->listarClientes( $clientes ) . $visao->rodape;
+            return $visao->cabecalho . $visao->listarPessoas( $pessoas ) . $visao->rodape;
         }
 
-        function salvarClientes( $dados ) {
+        function salvarPessoas( $dados ) {
 
             $dao = new ObjetoAcessoDados( $this->conexao );
 
             if ( isset($dados['id']) ) {
-                $cliente = $dao->buscarCliente( $dados['id'] );
+                $pessoa = $dao->buscarPessoa( $dados['id'] );
 
             } else {
-                $cliente = new ModeloCliente(null,$dados['pessoa']);
+                $pessoa = new ModeloPessoa(null,$dados['nome'],$dados['cpf'],$dados['rg'],$dados['email'],$dados['telefone'],$dados['endereco']);
             }
-            $cliente = $dao->salvarCliente( $cliente );
-            return $this->listarClientes();
+            $pessoa = $dao->salvarPessoa( $pessoa );
+            return $this->listarPessoas();
         }
 
-        function removerCliente ( $dados ){
+        function removerPessoa ( $dados ){
             $dao = new ObjetoAcessoDados( $this->conexao );
-            $cliente = $dao->buscarFornecedor( $dados['id'] );
-            $dao->removerCliente( $cliente );
-            return $this->listarClientes();
+            $pessoa = $dao->buscarPessoa( $dados['id'] );
+            $dao->removerPessoa( $cliente );
+            return $this->listarPessoas();
         }
 
-        function cadastrarClientes() {
+        function cadastrarPessoas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $visao = new VisaoCliente();
-            $cliente = $dao->buscarClientes();
-            return $visao->cabecalho . $visao->cadastrarCliente( $cliente ) . $visao->rodape;
+            $pessoa = $dao->buscarPessoas();
+            return $visao->cabecalho . $visao->cadastrarPessoas( $pessoa ) . $visao->rodape;
         }
 }
