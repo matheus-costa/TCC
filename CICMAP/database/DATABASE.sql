@@ -31,7 +31,8 @@ CREATE TABLE produto(
 create table item( 
     id serial primary key NOT NULL,
     fornecedor integer references fornecedor(id),
-    produto integer references produto(id)
+    banca integer references banca(id),
+	produto integer references produto(id)
 );
 
 
@@ -39,7 +40,7 @@ create table venda(
     id serial primary key NOT NULL,
     pessoa integer references pessoa(id),
     item integer references item(id),
-	banca integer references banca(id)
+	
 );
 
 create table trabalho(
