@@ -5,12 +5,12 @@
     class ModeloVenda {
 
         public $id;
-        public $item;
         public $pessoa;
+        public $item;
 
         function __construct( $id, ModeloItem $item, ModeloPessoa $pessoa) {
             $this->id = $id;
-            $this->item = $item;
             $this->pessoa = $pessoa;
+            $this->item = $item;
         }
     }
