@@ -9,27 +9,14 @@
                 <h1>Fornedores</h1>
                 <table border="1">
                 <tr>
-                    <th> CNPJ do Fornecedor            </th>
-                    <th> Nome do Fornecedor     </th>
-                    <th> CPF do Fornecedor      </th>
-                    <th> RG do Fornecedor		  </th>
-                    <th> E-mail do Fornecedor	  </th>
-                    <th> Telefone do Fornecedor </th>
-                    <th> Endereço do Fornecedor </th>
+                    <th> CNPJ do Fornecedor     </th>
                     <th> Excluir  Fornecedor    </th>
                 </tr>
             HTML;
             foreach ( $fornecedores as $fornecedor ) {
-                $pessoa = $fornecedor->pessoa;
                 $html .= <<<HTML
                     <tr>
                         <td>$fornecedor->cnpj</td>
-                        <td>$pessoa->nome</td>
-                        <td>$pessoa->cpf</td>
-                        <td>$pessoa->rg</td>
-                        <td>$pessoa->email</td>
-                        <td>$pessoa->telefone</td>
-                        <td>$pessoa->endereco</td>
                         <td><a href="?acao=removerFornecedor&id=$fornecedor->id">X</a></td>
                     </tr>
                 HTML;
@@ -51,31 +38,7 @@
                         CNPJ <br/>
                         <input type="text" name="endereco" autocomplete="off" />
                     </p>
-                    <p>
-                        Nome do Funcionario <br/>
-                        <input type="text" name="nome" autocomplete="off" />
-                    </p>
-                    <p>
-                        CPF <br/>
-                        <input type="text" name="cpf" autocomplete="off" />
-                    </p>
-                    <p>
-                        RG <br/>
-                        <input type="text" name="rg" autocomplete="off" />
-                    </p>
-                    <p>
-                        E-MAIL <br/>
-                        <input type="text" name="email" autocomplete="off" />
-                    </p>
-                    <p>
-                        TELEFONE <br/>
-                        <input type="text" name="telefone" autocomplete="off" />
-                    </p>
-                    <p>
-                        ENDERECO <br/>
-                        <input type="text" name="endereco" autocomplete="off" />
-                    </p>
-                    <p>
+                  
                         <select name="clube">
                             <option hidden>Selecione</option>
             HTML;
