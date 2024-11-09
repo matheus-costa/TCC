@@ -256,7 +256,7 @@
          
 
             } else {
-                $fornecedor = new ModeloFornecedor(null, $dados['banca'], $dados['pessoa']);
+                $fornecedor = new ModeloFornecedor(null, $dados['cnpj'],$dados['banca']);
             }
             $fornecedor = $dao->salvarFornecedor( $fornecedor );
             return $this->listarFornecedores();
