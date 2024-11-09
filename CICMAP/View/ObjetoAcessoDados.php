@@ -78,17 +78,17 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function buscarFornecedor( $id ) {
-            $sql = " select id,  cnpj, pessoa from fornecedor where id = '$id'; ";
+            $sql = " select id,  cnpj from fornecedor where id = '$id'; ";
 
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
 
-            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['cnpj'], $this->buscarPessoa($resultado[0]['pessoa']));
+            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['cnpj']);
            
             return $fornecedor;
         }
 
         function buscarFornecedores() {           
-            $sql = " select id, cnpj, pessoa from fornecedor order by cnpj; ";
+            $sql = " select id, cnpj from fornecedor order by cnpj; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $fornecedores = [];
            
@@ -101,26 +101,19 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         function salvarFornecedor( ModeloFornecedor $fornecedor ) {
             $id = $fornecedor -> id;
             $cnpj = $fornecedor -> cnpj;
-            $pessoa = $fornecedor->pessoa;
-            $pid = $pessoa -> id;
-            $nome = $pessoa ->nome;
-            $cpf = $pessoa ->cpf;
-            $rg = $pessoa ->rg;
-            $email = $pessoa ->email;
-            $telefone = $pessoa ->telefone;
-            $endereco = $pessoa ->endereco;
+          
       
            
             if ( is_null( $fornecedor->id ) ) {
-                $sql = " insert into fornecedor values (default,$cnpj,$pessoa) returning id; ";
-                $sqlTwo = " insert into pessoa values (default,$nome, $cpf, $rg, $email, $telefone, $endereco) returning id; ";
+                $sql = " insert into fornecedor values (default,$cnpj) returning id; ";
+                
 
-                $id = $this->conexao->query( $sql, $sqlTwo )->fetchAll(2)[0]['id'];
+                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
            
                 $id = $fornecedor->id;
 
-                $sql = " update  where id = '$id'; ";
+                $sql = " update fornecedor  where id = '$id'; ";
 
                 // Executa a query de atualização
                 $this->conexao->exec( $sql );
@@ -405,6 +398,52 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         function removerPessoa ( ModeloPessoa $pessoa ) {
             $id = $pessoa->id;
             $sql = " delete from pessoa where id = '$id'; ";
+            $this->conexao->exec($sql);
+            return null;
+        }
+
+        function buscarItem( $id ) {
+            $sql = " select id, fornecedor, banca, produto from item where id = '$id'; ";
+            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
+            $pessoa = new ModeloItem(buscarPessoa($resultado[0]['pessoa'] );
+            return $pessoa;
+        }
+
+        function buscarItens() {
+            $sql = " select id from item order by id; ";
+            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
+            $itens = [];
+            foreach ( $resultado as $tupla ) {
+                $itens[] = $this->buscarItem( $tupla['id'] );
+            }
+            return $itens;
+        }
+
+        function salvarItem( ModeloItem $item ) {
+
+            $id = $item->id;
+            $fornecedor = $item->fornecedor;
+            $Fid = $fornecedor -> id;
+            $banca = $item->banca;
+            $Bid = $banca ->id;
+            $produto = $item->produto;
+            $Pid = $produto->id;
+
+            if ( is_null( $item->id ) ) {
+                $sql = " insert into item values (default,$Fid,$Bid,$Pid) returning id; ";
+                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
+            } else {
+                $id = $item->id;
+                $sql = "  ";
+                $this->conexao->exec( $sql );
+            }
+            $item = $this->buscarItem($id);
+            return $item;
+        }
+
+        function removerItem ( ModeloItem $item ) {
+            $id = $item->id;
+            $sql = " delete from item where id = '$id'; ";
             $this->conexao->exec($sql);
             return null;
         }
