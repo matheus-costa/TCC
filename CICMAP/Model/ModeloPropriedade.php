@@ -1,5 +1,5 @@
 <?php
-    include_once 'ModeloItem.php';
+    include_once 'ModeloBanca.php';
     include_once 'ModeloPessoa.php';
 
     class ModeloPropriedade {
