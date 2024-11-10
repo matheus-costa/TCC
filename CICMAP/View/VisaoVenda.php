@@ -8,6 +8,12 @@
             $html = <<<HTML
                 <h1>Vendas</h1>
                 <table border="1">
+                <tr>
+                    <th> ID da venda            </th>
+                    <th> ID do Item      </th>
+                    <th> Nome do cliente     </th>
+                    <th> Excluir venda		  </th>
+                </tr>
             HTML;
             foreach ( $vendas as $venda ) {
                 $pessoa = $venda->pessoa;
@@ -16,9 +22,9 @@
                 $html .= <<<HTML
                     <tr>
                         <td>$venda->id</td>
+                        <td>$item->id</td>
                         <td>$pessoa->nome</td>
-                        <td>$item->produto</td>
-                        <td><a href="?acao=removerAtleta&id=$atleta->id">X</a></td>
+                        <td><a href="?acao=removerVenda&id=$venda->id">X</a></td>
                     </tr>
                 HTML;
             }
@@ -31,7 +37,7 @@
             return $html;
         }
 
-        function cadastrarVenda ( array $vendas ) {
+        function cadastrarVendas ( array $vendas ) {
             $html = <<<HTML
                 <h1>Cadastrar Venda</h1>
                 <form>
@@ -47,9 +53,9 @@
                         <select name="clube">
                             <option hidden>Selecione</option>
             HTML;
-            foreach ( $clubes as $clube ) {
+            foreach ( $pessoas as $pessoa ) {
             $html .= <<<HTML
-                            <option value="$clube->id">$clube->nome</option>
+                            <option value="$pessoa->id">$pessoa->nome</option>
             HTML;
             }
             $html .= <<<HTML
