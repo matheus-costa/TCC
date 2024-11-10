@@ -20,7 +20,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         private $conexao;
 
         // Construtor que recebe a conexão PDO como parâmetro e atribui à variável $conexao
-        function __construct( PDO $conexao = new PDO('pgsql:host=localhost;port=5432;dbname=tcc;user=postgres;password=postgres')) {
+        function __construct( PDO $conexao = new PDO('pgsql:host=localhost;port=5432;dbname=tcc;user=postgres;password=14122001')) {
             $this->conexao = $conexao;
         }
 
@@ -74,6 +74,52 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
             $this->conexao->exec($sql);
 
+            return null;
+        }
+
+        function buscarPessoa( $id ) {
+            $sql = " select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
+            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
+            $pessoa = new ModeloPessoa($resultado[0]['id'], $resultado[0]['nome'], $resultado[0]['cpf'], $resultado[0]['rg'], $resultado[0]['email'], $resultado[0]['telefone'], $resultado[0]['endereco']  );
+            return $pessoa;
+        }
+
+        function buscarPessoas() {
+            $sql = " select id from pessoa order by nome; ";
+            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
+            $pessoas = [];
+            foreach ( $resultado as $tupla ) {
+                $pessoas[] = $this->buscarPessoa( $tupla['id'] );
+            }
+            return $pessoas;
+        }
+
+        function salvarPessoa( ModeloPessoa $pessoa ) {
+
+            $id = $pessoa->id;
+            $nome = $pessoa->nome;
+            $cpf = $pessoa->cpf;
+            $rg = $pessoa->rg;
+            $email = $pessoa->email;
+            $telefone = $pessoa->telefone;
+            $endereco = $pessoa->endereco;
+
+            if ( is_null( $pessoa->id ) ) {
+                $sql = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
+                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
+            } else {
+                $id = $pessoa->id;
+                $sql = " update pessoa set where nome = '$nome',cpf = '$cpf',rg = '$rg',email = '$email',telefone = '$telefone',endereco = '$endereco' ";
+                $this->conexao->exec( $sql );
+            }
+            $pessoa = $this->buscarPessoa($id);
+            return $pessoa;
+        }
+
+        function removerPessoa ( ModeloPessoa $pessoa ) {
+            $id = $pessoa->id;
+            $sql = " delete from pessoa where id = '$id'; ";
+            $this->conexao->exec($sql);
             return null;
         }
 
@@ -312,101 +358,11 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $this->conexao->exec($sql);
             return null;
         }
-    
-        function buscarVenda( $id ) {
-            $sql = " select id, pessoa, item from venda where id = '$id'; ";
-            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $venda = new ModeloVenda( $resultado[0]['id'], $this->buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
-
-            return $venda;
-        }
-
-        function buscarVendas($id) {
-            $sql = " select id from venda order by pessoa.id; ";
-            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $vendas = [];
-            foreach ( $resultado as $tupla ) {
-                $vendas[] = $this->buscarVenda( $tupla['id'] );
-            }
-            return $vendas;
-        }
-
-        function salvarVenda( ModeloVenda $venda ) {
-            $item = $venda->item;
-            $Iid = $item->id;
-            $pessoa = $venda->pessoa;
-            $pid = $pessoa->id;
-
-            if ( is_null( $venda->id ) ) {
-                $sql = " insert into venda values () returning id; ";
-                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
-            } else {
-                $id = $venda->id;
-                $sql = " update venda set  ";
-                $this->conexao->exec( $sql );
-            }
-            $atleta = $this->buscarAtleta($id);
-            return $atleta;
-        }
-
-        function removerVenda ( ModeloVenda $venda ) {
-            $id = $venda->id;
-            $sql = " delete from venda where id = '$id'; ";
-            $this->conexao->exec($sql);
-            return null;
-        }
- 
-        function buscarPessoa( $id ) {
-            $sql = " select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
-            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $pessoa = new ModeloPessoa($resultado[0]['id'], $resultado[0]['nome'], $resultado[0]['cpf'], $resultado[0]['rg'], $resultado[0]['email'], $resultado[0]['telefone'], $resultado[0]['endereco']  );
-            return $pessoa;
-        }
-
-        function buscarPessoas() {
-            $sql = " select id from pessoa order by nome; ";
-            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $pessoas = [];
-            foreach ( $resultado as $tupla ) {
-                $pessoas[] = $this->buscarPessoa( $tupla['id'] );
-            }
-            return $pessoas;
-        }
-
-        function salvarPessoa( ModeloPessoa $pessoa ) {
-
-            $id = $pessoa->id;
-            $nome = $pessoa->nome;
-            $cpf = $pessoa->cpf;
-            $rg = $pessoa->rg;
-            $email = $pessoa->email;
-            $telefone = $pessoa->telefone;
-            $endereco = $pessoa->endereco;
-
-            if ( is_null( $pessoa->id ) ) {
-                $sql = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
-                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
-            } else {
-                $id = $pessoa->id;
-                $sql = " update pessoa set where nome = '$nome',cpf = '$cpf',rg = '$rg',email = '$email',telefone = '$telefone',endereco = '$endereco' ";
-                $this->conexao->exec( $sql );
-            }
-            $pessoa = $this->buscarPessoa($id);
-            return $pessoa;
-        }
-
-        function removerPessoa ( ModeloPessoa $pessoa ) {
-            $id = $pessoa->id;
-            $sql = " delete from pessoa where id = '$id'; ";
-            $this->conexao->exec($sql);
-            return null;
-        }
-
         function buscarItem( $id ) {
             $sql = " select id, fornecedor, banca, produto from item where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $pessoa = new ModeloItem(buscarPessoa($resultado[0]['pessoa'] );
-            return $pessoa;
+            $item = new ModeloItem($id,$this -> buscarProduto($resultado[0]['produto']), $this->buscarFornecedor($resultado[0]['fornecedor']), $this-> buscarBanca($resultado[0]['banca']) );
+            return $item;
         }
 
         function buscarItens() {
@@ -447,6 +403,49 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $this->conexao->exec($sql);
             return null;
         }
+        function buscarVenda( $id ) {
+            $sql = " select id, pessoa, item from venda where id = '$id'; ";
+            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
+            $venda = new ModeloVenda( $resultado[0]['id'], $this-> buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
+            return $venda;
+        }
+
+        function buscarVendas() {
+            $sql = " select id, pessoa, item from venda order by id; ";
+            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
+            $vendas = [];
+            foreach ( $resultado as $tupla ) {
+                $vendas[] = $this->buscarVenda( $tupla['id'] );
+            }
+            return $vendas;
+        }
+
+        function salvarVenda( ModeloVenda $venda ) {
+            $item = $venda->item;
+            $Iid = $item->id;
+            $pessoa = $venda->pessoa;
+            $pid = $pessoa->id;
+
+            if ( is_null( $venda->id ) ) {
+                $sql = " insert into venda values () returning id; ";
+                $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
+            } else {
+                $id = $venda->id;
+                $sql = " update venda set  ";
+                $this->conexao->exec( $sql );
+            }
+            $atleta = $this->buscarAtleta($id);
+            return $atleta;
+        }
+
+        function removerVenda ( ModeloVenda $venda ) {
+            $id = $venda->id;
+            $sql = " delete from venda where id = '$id'; ";
+            $this->conexao->exec($sql);
+            return null;
+        }
+ 
+        
     }
 /*  
 
