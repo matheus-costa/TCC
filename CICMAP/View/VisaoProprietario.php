@@ -9,6 +9,7 @@
                 <h1>Proprietarios</h1>
                 <table border="1">
                 <tr>
+                    <th> CNPJ do Proprietário     </th>
                     <th> Nome da Banca            </th>
                     <th> Número da Banca          </th>
                     <th> Nome do Proprietário     </th>
@@ -25,14 +26,15 @@
                 $banca = $proprietario->banca;
                 $html .= <<<HTML
                     <tr>
-                        <td>$banca->nome</td>
-                        <td>$banca->numeracao</td>
-                        <td>$pessoa->nome</td>
-                        <td>$pessoa->cpf</td>
-                        <td>$pessoa->rg</td>
-                        <td>$pessoa->email</td>
-                        <td>$pessoa->telefone</td>
-                        <td>$pessoa->endereco</td>
+                        <td>$proprietario->cnpj </td>
+                        <td>$banca->nome        </td>
+                        <td>$banca->numeracao   </td>
+                        <td>$pessoa->nome       </td>
+                        <td>$pessoa->cpf        </td>
+                        <td>$pessoa->rg         </td>
+                        <td>$pessoa->email      </td>
+                        <td>$pessoa->telefone   </td>
+                        <td>$pessoa->endereco   </td>
                         <td><a href="?acao=removerProprietario&id=$proprietario->id">X</a></td>
                     </tr>
                 HTML;
@@ -50,6 +52,10 @@
             $html = <<<HTML
                 <h1>Cadastrar Proprietarios</h1>
                 <form>
+                <p>
+                        CNPJ do Proprietario <br/>
+                        <input type="text" name="cnpj" autocomplete="off" />
+                    </p>
                     <p>
                         Nome do Proprietario <br/>
                         <input type="text" name="nome" autocomplete="off" />
