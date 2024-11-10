@@ -4,13 +4,15 @@
 
     class VisaoVenda extends VisaoLayout {
 
-        function listarVenda( array $vendas ) {
+        function listarVendas( array $vendas ) {
             $html = <<<HTML
                 <h1>Vendas</h1>
                 <table border="1">
             HTML;
             foreach ( $vendas as $venda ) {
-                $clube = $venda->clube;
+                $pessoa = $venda->pessoa;
+                $item = $venda->item;
+
                 $html .= <<<HTML
                     <tr>
                         <td>$venda->id</td>
