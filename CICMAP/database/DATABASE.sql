@@ -1,5 +1,5 @@
 create table banca(
-    id serial primary key,
+    id serial primary key NOT NULL,
     nome varchar NOT NULL,
     numeracao varchar NOT NULL
 );
@@ -39,8 +39,7 @@ create table item(
 create table venda(
     id serial primary key NOT NULL,
     pessoa integer references pessoa(id),
-    item integer references item(id),
-	
+    item integer references item(id)
 );
 
 create table trabalho(
@@ -59,8 +58,13 @@ create table propriedade(
 );
 
 
-insert into fornecedor values(default, '4545', '3' );
+--Insert Fornecedor
+insert into fornecedor values(default, '4545');
+insert into fornecedor values(default, '5555');
+insert into fornecedor values(default, '3030');
+insert into fornecedor values(default, '1909');
 
+--Insert Pessoa
 insert into pessoa values (default, 'fulano','00102223680','2245494678','fulano@gmail.com','11447895','na casa dele');
 insert into pessoa values (default, 'VeioDaHavan','00102223680','2245494678','VeioDaHavan@gmail.com','11447895','na casa dele');
 insert into pessoa values (default, 'Cliente da Silva','00102223450','224333668','Cliente@gmail.com','44588895','na casa dele');
@@ -74,12 +78,12 @@ insert into produto values ('4', 'Camiseta','GG','NIKE','100');
 insert into produto values ('5', 'Blusao','GG','NIKE','100');
 --Insert de uma banca
 insert into banca values ('1','HavanFake','13');
---Insert de um Item
-insert into item values ('1','1', '1', '1');
-insert into item values ('1','1', '1', '2');
-insert into item values ('1','1', '1', '3');
-insert into item values ('1','1', '1', '4');
+insert into banca values ('2','NikeFake','14');
+
 --Insert de um Item(id, fornecedor, banca, produto)
+insert into item values ('1','1', '1', '2');
+insert into item values ('2','5', '2', '3');
+insert into item values ('1','1', '1', '4');
 insert into item values ('1','1', '1', '5');
 --Insert de um proprietário(id, cnpj,pessoa,banca)
 insert into propriedade values ('2','123456778', '1', '1');
@@ -88,7 +92,8 @@ insert into venda values (default, '1', '1');
 --Insert de um funcionario(id,pessoa,banca)
 insert into trabalho values (default, '1','1');
 insert into trabalho values (default, '2','1');
-
+--Insert de uma venda(id, pessoa,item);
+insert into venda values(default,'1','1');
 
 --SELECT 
 select * from banca;
@@ -99,7 +104,7 @@ select * from trabalho;
 select * from fornecedor;
 select * from pessoa;
 select * from produto;
-select * from cliente;
+
 
 
 select from propriedade pr
@@ -199,3 +204,6 @@ select id from pessoa order by nome;
 delete from fornecedor where cnpj = '1234';
         
 --test
+
+select id, pessoa, item from venda order by id;
+select id, pessoa, item from venda where id = '3';
