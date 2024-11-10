@@ -10,6 +10,7 @@
     include_once '../View/VisaoFuncionario.php';
     include_once '../View/VisaoProduto.php';
     include_once '../View/VisaoProprietario.php';
+    include_once '../View/VisaoVenda.php';
     include_once '../View/VisaoLayout.php';
     //MODELS
     include_once '../Model/ModeloBanca.php';
@@ -53,7 +54,7 @@
 
             } else {
                 // Caso contrário, cria um novo banca com os dados fornecidos
-                $banca = new ModeloBanca(null, $dados['nome'], $dados['numercao']);
+                $banca = new ModeloBanca(null, $dados['nome'], $dados['numeracao']);
             }
 
             // Salva o banca no banco de dados
@@ -140,12 +141,12 @@
             if ( isset($dados['id']) ) {
                 $proprietario = $dao->buscarProprietario( $dados['id'] );
                 $proprietario->cnpj = $dados['cnpj'];
-                $proprietario->pessoa =  $dados['pessoa'];
-                $proprietario->banca =  $dados['banca'];
+                $proprietario->pessoa = $dao->buscarPessoa($dados['id']);
+                $proprietario->banca = $dao->buscarBanca($dados['id']);
 
             } else {
                 
-                $proprietario = new ModeloPropriedade( null, $dados['cnpj'], $dao->buscarPessoa($dados['pessoa']),$dao->buscarBanca($dados['banca']) );
+                $proprietario = new ModeloPropriedade( null, $dados['cnpj'], $dao->buscarPessoa($dados['id']),$dao->buscarBanca($dados['id']) );
             }
             $proprietario = $dao->salvarProprietario( $proprietario );
             return $this->listarProprietarios();
@@ -179,7 +180,7 @@
             $dao = new ObjetoAcessoDados( $this->conexao );
 
             if ( isset($dados['id']) ) {
-                $venda = $dao->buscarBanca( $dados['id'] );
+                $venda = $dao->buscarVenda( $dados['id'] );
                 $venda->pessoa = $dados['pessoa'];
                 $venda->item = $dados['item'];
                 
@@ -197,7 +198,7 @@
             return $this->listarVendas();
         }
     
-        function cadastrarVenda() {
+        function cadastrarVendas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $visao = new VisaoVenda();
             $venda = $dao->buscarVendas();
