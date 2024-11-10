@@ -8,6 +8,7 @@
                 <h1>Bancas</h1>
                 <table border="1">
                 <tr>
+                    <th> ID da Banca            </th>
                     <th> Nome da Banca            </th>
                     <th> Numeração Banca     </th>
                     <th> Excluir Banca		  </th>
@@ -16,6 +17,7 @@
             foreach ( $bancas as $banca ) {
                 $html .= <<<HTML
                     <tr>
+                        <td>$banca->id</td>
                         <td>$banca->nome</td>
                         <td>$banca->numeracao</td>
                         <td><a href="?acao=removerBanca&id=$banca->id">X</a></td>
