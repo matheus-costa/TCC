@@ -180,11 +180,11 @@
 
             if ( isset($dados['id']) ) {
                 $venda = $dao->buscarBanca( $dados['id'] );
-                $venda->item = $dados['item'];
                 $venda->pessoa = $dados['pessoa'];
-
+                $venda->item = $dados['item'];
+                
             } else {
-                $venda = new ModeloVenda(null, $dados['item'], $dados['pessoa']);
+                $venda = new ModeloVenda(null,$dao->buscarPessoa($dados['pessoa']),$dao->buscarItem($dados['item']) );
             }
             $venda = $dao->salvarVenda( $venda );
             return $this->listarVendas();
