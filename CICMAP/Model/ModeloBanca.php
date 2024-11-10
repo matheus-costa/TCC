@@ -10,6 +10,6 @@
             $this->id = $id;
             $this->nome = $nome;
             $this->numeracao = $numeracao;
-                }
+        }
     }
     
