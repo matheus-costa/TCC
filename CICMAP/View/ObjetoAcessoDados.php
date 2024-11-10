@@ -78,7 +78,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function buscarPessoa( $id ) {
-            $sql = " select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
+         $sql = " select id, nome, cpf, rg, email, telefone, endereco from pessoa where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $pessoa = new ModeloPessoa($resultado[0]['id'], $resultado[0]['nome'], $resultado[0]['cpf'], $resultado[0]['rg'], $resultado[0]['email'], $resultado[0]['telefone'], $resultado[0]['endereco']  );
             return $pessoa;
@@ -304,7 +304,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $proprietarios = [];
-            // Para cada resultado, busca a banca pelo ID e o adiciona ao array
+            // Para cada resultado, busca o proprietario pelo ID e o adiciona ao array
             foreach ( $resultado as $tupla ) {
                 $proprietarios[] = $this->buscarProprietario( $tupla['id'] );
             }
@@ -329,9 +329,9 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $nomeBanca = $banca ->nome;
                 $numeracao = $banca ->numeracao;
 
-                $sql = " insert into propriedade values (null,$cnpj, $pid, $bid) returning id; ";
-                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email','$telefone','$endereco') returnig pid;";
-                $sqlThree = "insert into banca values ('null','$nomeBanca','$numeracao') returning bid;";
+                $sql = " insert into propriedade values (default,$cnpj, $pid, $bid) returning id; ";
+                $sqlTwo = " insert into pessoa values (default, '$nome','$cpf','$rg','$email','$telefone','$endereco') returnig pid;";
+                $sqlThree = "insert into banca values (default,'$nomeBanca','$numeracao') returning bid;";
 
                 $id = $this->conexao->query( $sql, $sqlTwo, $sqlThree )->fetchAll(2)[0]['id'];
             } else {
