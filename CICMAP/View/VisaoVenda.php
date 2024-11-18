@@ -12,17 +12,20 @@
                     <th> ID da venda            </th>
                     <th> ID do Item      </th>
                     <th> Nome do cliente     </th>
+                    <th> Nome do produto     </th>
                     <th> Excluir venda		  </th>
                 </tr>
             HTML;
             foreach ( $vendas as $venda ) {
                 $pessoa = $venda->pessoa;
+                $produto = $venda->item->produto;
                 $item = $venda->item;
 
                 $html .= <<<HTML
                     <tr>
                         <td>$venda->id</td>
                         <td>$item->id</td>
+                        <td>$venda->$item->$produto->nome</td>
                         <td>$pessoa->nome</td>
                         <td><a href="?acao=removerVenda&id=$venda->id">X</a></td>
                     </tr>
