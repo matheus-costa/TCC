@@ -90,11 +90,7 @@
                     </p>
                    
             HTML;
-            foreach ( $proprietarios as $proprietario ) {
-            $html .= <<<HTML
-                            <option value="$clube->id">$clube->nome</option>
-            HTML;
-            }
+           
             $html .= <<<HTML
                         </select>
                     </p>
