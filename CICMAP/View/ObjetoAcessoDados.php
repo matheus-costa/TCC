@@ -217,10 +217,10 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $nomeBanca = $banca ->nome;
                 $numeracao = $banca ->numeracao;
                 
-                $sql = " insert into trabalho values (null, '$pid','$bid') returning id; ";
-                $sqlTwo = " insert into pessoa values (null, '$nome','$cpf','$rg','$email', '$telefone','$endereco') returnig pid;";
+                $sql = " insert into trabalho values (default, '$pid','$bid') returning id; ";
+                $sqlTwo = " insert into pessoa values (default, '$nome','$cpf','$rg','$email', '$telefone','$endereco') returnig pid;";
                 
-                $sqlThree = "insert into banca values ('null','$nomeBanca','$numeracao') returning bid;";
+                $sqlThree = "insert into banca values ('default','$nomeBanca','$numeracao') returning bid;";
 
                 $id = $this->conexao->query( $sql ,$sqlTwo ,$sqlThree )->fetchAll(2)[0]['id'];
             } else {
