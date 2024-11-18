@@ -69,8 +69,6 @@ insert into pessoa values (default, 'fulano','00102223680','2245494678','fulano@
 insert into pessoa values (default, 'VeioDaHavan','00102223680','2245494678','VeioDaHavan@gmail.com','11447895','na casa dele');
 insert into pessoa values (default, 'Cliente da Silva','00102223450','224333668','Cliente@gmail.com','44588895','na casa dele');
 insert into pessoa values (default, 'funcionário da Silva','001783450','22423458','funcionario@gmail.com','44588895','na casa dele');
---Insert Cliente
-insert into cliente values (default, '4');
 --Insert produto normal
 insert into produto values ('1', 'Tenis','45','NIKE','100');
 insert into produto values ('3', 'Tenis','42','NIKE','100');
@@ -205,5 +203,21 @@ delete from fornecedor where cnpj = '1234';
         
 --test
 
-select id, pessoa, item from venda order by id;
-select id, pessoa, item from venda where id = '3';
+select id ,pessoa, item
+	  from venda 
+	      join item i
+		  on i.id = venda.item
+		  join produto pr
+		  on i.produto = pr.id
+order by id;		  
+		  
+-- dentro da tabela item(id, fornecedor, banca, produto)
+--dentro da tabela venda(id, pessoa,item)
+
+	  
+select * from item;
+
+select id, pessoa, item from venda where id = '3'; --SELECT ANTIGO
+
+
+	 
