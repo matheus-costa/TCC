@@ -411,7 +411,14 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function buscarVendas() {
-            $sql = " select id, pessoa, item from venda order by id; ";
+            $sql = "SELECT venda.id as id, item, pessoa, pr.nome AS nomeprod
+                           FROM venda
+                                JOIN item i 
+                                    ON venda.item = i.id
+                                JOIN produto pr 
+                                    ON pr.id = i.produto
+                                ORDER BY id;";
+
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $vendas = [];
             foreach ( $resultado as $tupla ) {
