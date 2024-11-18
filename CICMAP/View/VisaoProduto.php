@@ -11,7 +11,7 @@
                     <th> ID do Produto            </th>
                     <th> Nome do Produto            </th>
                     <th> Tamanho do Produto     </th>
-                    <th> Marca do Produto     </th>th
+                    <th> Marca do Produto     </th>
                     <th> Preço do Produto		  </th>
                     <th> Excluir Produto		  </th>
                 </tr>
