@@ -178,7 +178,7 @@
         function salvarVenda( $dados ) {
 
             $dao = new ObjetoAcessoDados( $this->conexao );
-
+ 
             if ( isset($dados['id']) ) {
                 $venda = $dao->buscarVenda( $dados['id'] );
                 $venda->pessoa = $dados['pessoa'];
