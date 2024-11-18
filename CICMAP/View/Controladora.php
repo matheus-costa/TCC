@@ -238,8 +238,8 @@
         function cadastrarFuncionarios() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $visao = new VisaoFuncionario();
-            $funcionario = $dao->buscarFuncionarios();
-            return $visao->cabecalho . $visao->cadastrarFuncionarios( $funcionario ) . $visao->rodape;
+            $funcionarios = $dao->buscarFuncionarios();
+            return $visao->cabecalho . $visao->cadastrarFuncionarios( $funcionarios ) . $visao->rodape;
         }
         function listarFornecedores() {
             $dao = new ObjetoAcessoDados( $this->conexao );
