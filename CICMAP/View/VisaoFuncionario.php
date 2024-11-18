@@ -40,13 +40,13 @@
             $html .= <<<HTML
                 </table>
                 <p>
-                    <a href="?acao=cadastrarFuncionario">Novo</a>
+                    <a href="?acao=cadastrarFuncionarios">Novo</a>
                 </p>
             HTML;
             return $html;
         }
 
-        function cadastrarfuncionarios ( array $funcionarios ) {
+        function cadastrarFuncionarios($bancas) {
             $html = <<<HTML
                 <h1>Cadastrar Funcionarios</h1>
                 <form>
@@ -74,21 +74,12 @@
                         ENDERECO <br/>
                         <input type="text" name="endereco" autocomplete="off" />
                     </p>
-                    <p>
-                        Nome da banca  <br/>
-                        <input type="text" name="nome" autocomplete="off" />
-                    </p>
-                    <p>
-                        Numeração da banca <br/>
-                        <input type="text" name="numeracao" autocomplete="off" />
-                    </p>
-                   
             HTML;
-            foreach ( $funcionarios as $funcionario ) {
-            $html .= <<<HTML
-                            <option value="$clube->id">$clube->nome</option>
-            HTML;
-            }
+            foreach ( $bancas as $banca ) {
+                $html .= <<<HTML
+                                <option value="$banca->id">$banca->nome</option>
+                HTML;
+                }
             $html .= <<<HTML
                         </select>
                     </p>
