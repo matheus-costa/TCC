@@ -5,11 +5,9 @@
     require_once 'ObjetoAcessoDados.php';
     //VIEWS//
     include_once '../View/VisaoBanca.php';
-    include_once '../View/VisaoCliente.php';
+    include_once '../View/VisaoPessoa.php';
     include_once '../View/VisaoFornecedor.php';
-    include_once '../View/VisaoFuncionario.php';
     include_once '../View/VisaoProduto.php';
-    include_once '../View/VisaoProprietario.php';
     include_once '../View/VisaoVenda.php';
     include_once '../View/VisaoLayout.php';
     //MODELS
@@ -280,7 +278,7 @@
         function listarPessoas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $pessoas = $dao->buscarPessoas();
-            $visao = new VisaoCliente();
+            $visao = new VisaoPessoa();
             return $visao->cabecalho . $visao->listarPessoas( $pessoas ) . $visao->rodape;
         }
 
@@ -301,14 +299,17 @@
         function removerPessoa ( $dados ){
             $dao = new ObjetoAcessoDados( $this->conexao );
             $pessoa = $dao->buscarPessoa( $dados['id'] );
-            $dao->removerPessoa( $cliente );
+            $dao->removerPessoa( $pessoa );
             return $this->listarPessoas();
         }
 
         function cadastrarPessoas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
-            $visao = new VisaoCliente();
+            $visao = new VisaoPessoa();
             $pessoa = $dao->buscarPessoas();
-            return $visao->cabecalho . $visao->cadastrarPessoas( $pessoa ) . $visao->rodape;
+            $trabalho = $dao->buscarFuncionarios();
+            $propriedade = $dao->buscarProprietarios();
+          //  $banca = $dao->buscarBancas();
+            return $visao->cabecalho . $visao->cadastrarPessoas( $pessoa,$propriedade, $trabalho ) . $visao->rodape;
         }
 }
