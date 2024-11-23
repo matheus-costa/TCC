@@ -51,7 +51,7 @@
             HTML;
             foreach ( $banca as $bancas ) {
             $html .= <<<HTML
-                            <option value="$->id">$bancas->nome</option>
+                            <option value="$banca->id">$bancas->nome</option>
             HTML;
             }
             $html .= <<<HTML
