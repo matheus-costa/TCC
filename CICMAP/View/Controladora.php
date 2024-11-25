@@ -199,8 +199,10 @@
         function cadastrarVendas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $visao = new VisaoVenda();
-            $venda = $dao->buscarVendas();
-            return $visao->cabecalho . $visao->cadastrarVendas( $venda ) . $visao->rodape;
+            $vendas = $dao->buscarVendas();
+            $itens = $dao->buscarItens();
+            $pessoas = $dao->buscarPessoas();
+            return $visao->cabecalho . $visao->cadastrarVendas( $vendas, $itens, $pessoas ) . $visao->rodape;
         }
 
         function listarFuncionarios() {
