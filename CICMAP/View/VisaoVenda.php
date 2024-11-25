@@ -4,7 +4,7 @@
 
     class VisaoVenda extends VisaoLayout {
 
-        function listarVendas( array $vendas ) {
+        function listarVendas( $vendas ) {
             $html = <<<HTML
                 <h1>Vendas</h1>
                 <table border="1">
@@ -18,14 +18,14 @@
             HTML;
             foreach ( $vendas as $venda ) {
                 $pessoa = $venda->pessoa;
-                $produto = $venda->item->produto;
                 $item = $venda->item;
+                $produto = $item->produto;
 
                 $html .= <<<HTML
                     <tr>
                         <td>$venda->id</td>
                         <td>$item->id</td>
-                        <td>$venda->$item->$produto->nome</td>
+                        <td>$produto->nome</td>
                         <td>$pessoa->nome</td>
                         <td><a href="?acao=removerVenda&id=$venda->id">X</a></td>
                     </tr>
@@ -34,38 +34,60 @@
             $html .= <<<HTML
                 </table>
                 <p>
-                    <a href="?acao=cadastrarVenda">Novo</a>
+                    <a href="?acao=cadastrarVendas">Novo</a>
                 </p>
             HTML;
             return $html;
         }
 
-        function cadastrarVendas ( array $vendas ) {
+        function cadastrarVendas ( $vendas,$pessoa, $item) {
             $html = <<<HTML
                 <h1>Cadastrar Venda</h1>
                 <form>
                     <p>
-                        Nome <br/>
+                        Nome do produto <br/>
                         <input type="text" name="nome" autocomplete="off" />
                     </p>
                     <p>
-                        CPF <br/>
+                        Nome do cliente <br/>
                         <input type="text" name="cpf" autocomplete="off" />
                     </p>
+
                     <p>
-                        <select name="clube">
-                            <option hidden>Selecione</option>
-            HTML;
-            foreach ( $pessoas as $pessoa ) {
+                        <select name ="item">
+                            <option hidden>Selecionar Item</option>
+                    </p>        
+            HTML;       
+            foreach ( $item as $itens ) {
+                $vendas = $itens->nome;
             $html .= <<<HTML
-                            <option value="$pessoa->id">$pessoa->nome</option>
+                            <option value="$itens->id">$item->nome</option>
+            HTML;
+                            }
+            $html .= <<<HTML
+                        </select>
+                    </p>
+
+                    <p>
+                        <select name="pessoa">
+                            <option hidden>Selecionar Cliente</option>
+            HTML;
+            foreach ( $pessoa as $pessoas ) {
+                $vendas = $pessoas->nome;
+            $html .= <<<HTML
+                            <option value="$pessoas->id">$pessoa->nome</option>
             HTML;
             }
             $html .= <<<HTML
                         </select>
                     </p>
+            HTML;
+           
+            $html .= <<<HTML
+                    </p>
+
                     <p>
-                        <button type="submit" formmethod="post" formaction="?acao=salvarAtleta">Cadastrar</button>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarPessoas">Cadastrar</button>
                     </p>
                 </form>
             HTML;
