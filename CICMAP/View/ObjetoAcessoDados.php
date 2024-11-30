@@ -404,16 +404,15 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return null;
         }
         function buscarVenda( $id ) {
-            $sql = " select id, dataHora, pessoa, item from venda where id = '$id'; ";
+            $sql = " select id, data_venda, pessoa, item from venda where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $venda = new ModeloVenda($resultado[0]['id'], 
-            isset($resultado[0]['dataHora']) ? $resultado[0]['dataHora'] : null,
-                                      $this-> buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
+            $venda = new ModeloVenda($resultado[0]['id'], $resultado[0]['data_venda'],
+            $this-> buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
             return $venda;
         }
 
         function buscarVendas() {
-            $sql = "SELECT venda.id as id, dataHora, pessoa, item
+            $sql = "SELECT venda.id as id, data_venda, pessoa, item
                            FROM venda
                                 JOIN item i 
                                     ON venda.item = i.id
@@ -431,13 +430,13 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
         function salvarVenda( ModeloVenda $venda ) {
             $item = $venda->item;
-            $dataHora = $venda->dataHora;
+            $data_venda = $venda->data_venda;
             $Iid = $item->id;   
             $pessoa = $venda->pessoa;
             $pid = $pessoa->id;
 
             if ( is_null( $venda->id ) ) {
-                $sql = " insert into venda values (null,$dataHora,$pid,$Iid) returning id; ";
+                $sql = " insert into venda values (null,$data_venda,$pid,$Iid) returning id; ";
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $venda->id;
