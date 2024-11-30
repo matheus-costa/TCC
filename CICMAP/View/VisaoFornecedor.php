@@ -42,9 +42,9 @@
                         <select name="clube">
                             <option hidden>Selecione</option>
             HTML;
-            foreach ( $clubes as $clube ) {
+            foreach ( $pessoas as $pessoa ) {
             $html .= <<<HTML
-                            <option value="$clube->id">$clube->nome</option>
+                            <option value="$pessoa->id">$pessoa->nome</option>
             HTML;
             }
             $html .= <<<HTML
