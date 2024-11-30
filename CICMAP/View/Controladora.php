@@ -179,11 +179,12 @@
  
             if ( isset($dados['id']) ) {
                 $venda = $dao->buscarVenda( $dados['id'] );
+                $venda->dataHora = $dados['dataHora'];
                 $venda->pessoa = $dados['pessoa'];
                 $venda->item = $dados['item'];
                 
             } else {
-                $venda = new ModeloVenda(null,$dao->buscarPessoa($dados['pessoa']),$dao->buscarItem($dados['item']) );
+                $venda = new ModeloVenda(null, $dados['dataHora'],$dao->buscarPessoa($dados['pessoa']),$dao->buscarItem($dados['item']) );
             }
             $venda = $dao->salvarVenda( $venda );
             return $this->listarVendas();
