@@ -124,17 +124,17 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function buscarFornecedor( $id ) {
-            $sql = " select id,  cnpj from fornecedor where id = '$id'; ";
+            $sql = " select id,  cnpj, pessoa from fornecedor where id = '$id'; ";
 
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
 
-            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['cnpj']);
+            $fornecedor = new ModeloFornecedor( $resultado[0]['id'], $resultado[0]['cnpj'],$this->buscarPessoa($resultado[0]['pessoa']));
            
             return $fornecedor;
         }
 
         function buscarFornecedores() {           
-            $sql = " select id, cnpj from fornecedor order by cnpj; ";
+            $sql = " select id, cnpj, pessoa from fornecedor order by cnpj; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $fornecedores = [];
            
@@ -144,14 +144,14 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
             return $fornecedores;
         }
-        function salvarFornecedor( ModeloFornecedor $fornecedor ) {
+        function salvarFornecedor( ModeloFornecedor $fornecedor, ModeloPessoa $pessoa ) {
             $id = $fornecedor -> id;
             $cnpj = $fornecedor -> cnpj;
+            $pessoa = $fornecedor-> pessoa;
           
-      
            
             if ( is_null( $fornecedor->id ) ) {
-                $sql = " insert into fornecedor values (default,$cnpj) returning id; ";
+                $sql = " insert into fornecedor values (default,$cnpj,$pessoa) returning id; ";
                 
 
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
@@ -404,14 +404,16 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return null;
         }
         function buscarVenda( $id ) {
-            $sql = " select id, pessoa, item from venda where id = '$id'; ";
+            $sql = " select id, dataHora, pessoa, item from venda where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $venda = new ModeloVenda( $resultado[0]['id'], $this-> buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
+            $venda = new ModeloVenda($resultado[0]['id'], 
+            isset($resultado[0]['dataHora']) ? $resultado[0]['dataHora'] : null,
+                                      $this-> buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
             return $venda;
         }
 
         function buscarVendas() {
-            $sql = "SELECT venda.id as id, item, pessoa, pr.nome AS nomeprod
+            $sql = "SELECT venda.id as id, dataHora, pessoa, item
                            FROM venda
                                 JOIN item i 
                                     ON venda.item = i.id
@@ -429,20 +431,21 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
         function salvarVenda( ModeloVenda $venda ) {
             $item = $venda->item;
-            $Iid = $item->id;
+            $dataHora = $venda->dataHora;
+            $Iid = $item->id;   
             $pessoa = $venda->pessoa;
             $pid = $pessoa->id;
 
             if ( is_null( $venda->id ) ) {
-                $sql = " insert into venda values () returning id; ";
+                $sql = " insert into venda values (null,$dataHora,$pid,$Iid) returning id; ";
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $venda->id;
                 $sql = " update venda set  ";
                 $this->conexao->exec( $sql );
             }
-            $atleta = $this->buscarAtleta($id);
-            return $atleta;
+            $venda = $this->buscarVenda($id);
+            return $venda;
         }
 
         function removerVenda ( ModeloVenda $venda ) {
