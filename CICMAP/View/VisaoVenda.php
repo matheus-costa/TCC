@@ -12,10 +12,10 @@
                     <th> ID do Item      </th>
                     <th> Nome do Produto     </th>
                     <th> Preço do Produto </th>
-                    <th> Data da Venda     </th>
                     <th> Nome do Cliente     </th>
-                    <th> Nome do Cliente     </th>
+                    <th> Data da Venda </th>
                     <th> Excluir Venda     </th>
+
 
 
                 </tr>
@@ -30,8 +30,8 @@
                         <td>$item->id</td>
                         <td>$produto->nome</td>
                         <td>$produto->preco</td>
-                        <td>$venda->dataHora<td>
                         <td>$pessoa->nome</td>
+                        <td>$venda->data_venda</td>
                         <td><a href="?acao=removerVenda&id=$venda->id">X</a></td>
                     </tr>
                 HTML;
@@ -45,28 +45,23 @@
             return $html;
         }
 
-        function cadastrarVendas ( $pessoa, $item) {
+        function cadastrarVendas ($pessoa, $item) {
             $html = <<<HTML
                 <h1>Cadastrar Venda</h1>
                 <form>
                     <p>
-                        Nome do produto <br/>
-                        <input type="text" name="nome" autocomplete="off" />
+                        Data da venda: <br/>
+                        <input type="text" name="data_venda" autocomplete="off" />
                     </p>
-                    <p>
-                        Nome do cliente <br/>
-                        <input type="text" name="cpf" autocomplete="off" />
-                    </p>
-
                     <p>
                         <select name ="item">
                             <option hidden>Selecionar Item</option>
                     </p>        
             HTML;       
             foreach ( $item as $itens ) {
-                $vendas = $itens->nome;
+                $produto = $itens->produto;
             $html .= <<<HTML
-                            <option value="$itens->id">$item->nome</option>
+                            <option value="$produto->id">$produto->nome</option>
             HTML;
                             }
             $html .= <<<HTML
@@ -78,9 +73,8 @@
                             <option hidden>Selecionar Cliente</option>
             HTML;
             foreach ( $pessoa as $pessoas ) {
-                $vendas = $pessoas->nome;
             $html .= <<<HTML
-                            <option value="$pessoas->id">$pessoa->nome</option>
+                            <option value="$pessoas->id">$pessoas->id</option>
             HTML;
             }
             $html .= <<<HTML
@@ -89,10 +83,8 @@
             HTML;
            
             $html .= <<<HTML
-                    </p>
-
                     <p>
-                        <button type="submit" formmethod="post" formaction="?acao=salvarPessoas">Cadastrar</button>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarVendas">Cadastrar</button>
                     </p>
                 </form>
             HTML;
