@@ -9,11 +9,15 @@
                 <h1>Vendas</h1>
                 <table border="1">
                 <tr>
-                    <th> ID da venda            </th>
                     <th> ID do Item      </th>
-                    <th> Nome do cliente     </th>
-                    <th> Nome do produto     </th>
-                    <th> Excluir venda		  </th>
+                    <th> Nome do Produto     </th>
+                    <th> Preço do Produto </th>
+                    <th> Data da Venda     </th>
+                    <th> Nome do Cliente     </th>
+                    <th> Nome do Cliente     </th>
+                    <th> Excluir Venda     </th>
+
+
                 </tr>
             HTML;
             foreach ( $vendas as $venda ) {
@@ -23,9 +27,10 @@
 
                 $html .= <<<HTML
                     <tr>
-                        <td>$venda->id</td>
                         <td>$item->id</td>
                         <td>$produto->nome</td>
+                        <td>$produto->preco</td>
+                        <td>$venda->dataHora<td>
                         <td>$pessoa->nome</td>
                         <td><a href="?acao=removerVenda&id=$venda->id">X</a></td>
                     </tr>
@@ -40,7 +45,7 @@
             return $html;
         }
 
-        function cadastrarVendas ( $vendas,$pessoa, $item) {
+        function cadastrarVendas ( $pessoa, $item) {
             $html = <<<HTML
                 <h1>Cadastrar Venda</h1>
                 <form>

@@ -18,6 +18,7 @@ create table pessoa(
 create table fornecedor (
     id serial primary key NOT NULL,
 	cnpj varchar NOT NULL,
+	pessoa integer references pessoa(id)
 );
 
 CREATE TABLE produto(  
@@ -38,6 +39,7 @@ create table item(
 
 create table venda(
     id serial primary key NOT NULL,
+	dataHora date NOT NULL,
     pessoa integer references pessoa(id),
     item integer references item(id)
 );
@@ -59,10 +61,10 @@ create table propriedade(
 
 
 --Insert Fornecedor
-insert into fornecedor values(default, '4545');
-insert into fornecedor values(default, '5555');
-insert into fornecedor values(default, '3030');
-insert into fornecedor values(default, '1909');
+insert into fornecedor values(default, '4545', '1');
+insert into fornecedor values(default, '5555', '2');
+insert into fornecedor values(default, '3030', '4');
+insert into fornecedor values(default, '1909', '6');
 
 --Insert Pessoa
 insert into pessoa values (default, 'fulano','00102223680','2245494678','fulano@gmail.com','11447895','na casa dele');
@@ -79,10 +81,10 @@ insert into banca values ('1','HavanFake','13');
 insert into banca values ('2','NikeFake','14');
 
 --Insert de um Item(id, fornecedor, banca, produto)
-insert into item values ('1','1', '1', '2');
+insert into item values (default,'2', '1', '2');
 insert into item values ('2','5', '2', '3');
-insert into item values ('1','1', '1', '4');
-insert into item values ('1','1', '1', '5');
+insert into item values ('1','3', '1', '4');
+insert into item values ('1','4', '1', '5');
 --Insert de um proprietário(id, cnpj,pessoa,banca)
 insert into propriedade values ('2','123456778', '1', '1');
 --insert de uma venda para um cliente(id, pessoa, item)
@@ -91,7 +93,12 @@ insert into venda values (default, '1', '1');
 insert into trabalho values (default, '1','1');
 insert into trabalho values (default, '2','1');
 --Insert de uma venda(id, pessoa,item);
-insert into venda values(default,'1','1');
+insert into venda values(default,'2024-14-12','5','5');
+INSERT INTO venda VALUES (DEFAULT,'2024-12-12', 1, 1);
+INSERT INTO venda (id, dataHora,pessoa, item) VALUES (DEFAULT, '2024-12-12', 1, 1);
+INSERT INTO venda (id, dataHora,pessoa, item) VALUES (DEFAULT, '2024-12-12', 2, 2);
+
+
 
 --SELECT 
 select * from banca;
@@ -215,9 +222,25 @@ order by id;
 --dentro da tabela venda(id, pessoa,item)
 
 	  
-select * from item;
+select * from venda;
 
 select id, pessoa, item from venda where id = '3'; --SELECT ANTIGO
 
+select id, dataHora, pessoa, item from venda where id = 5;
 
-	 
+SELECT dataHora, pessoa, item
+                           FROM venda
+                                JOIN item i 
+                                    ON venda.item = i.id
+                                JOIN produto pr 
+                                    ON pr.id = i.produto
+                                ORDER BY venda.id;
+
+
+								SELECT venda.id as id, dataHora, pessoa, item
+                           FROM venda
+                                JOIN item i 
+                                    ON venda.item = i.id
+                                JOIN produto pr 
+                                    ON pr.id = i.produto
+                                ORDER BY id;
