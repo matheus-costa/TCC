@@ -33,7 +33,7 @@
             return $html;
         }
 
-        function cadastrarBancas ( array $banca ) {
+        function cadastrarBancas () {
             $html = <<<HTML
                 <h1>Cadastrar Bancas</h1>
                 <form>
@@ -44,18 +44,6 @@
                     <p>
                         Numeracao: <br/>
                         <input type="text" name="numeracao" autocomplete="off" />
-                    </p>
-                    <p>
-                        <select name="banca">
-                            <option hidden>Selecione</option>
-            HTML;
-            foreach ( $banca as $bancas ) {
-            $html .= <<<HTML
-                            <option value="$banca->id">$bancas->id</option>
-            HTML;
-            }
-            $html .= <<<HTML
-                        </select>
                     </p>
                     <p>
                         <button type="submit" formmethod="post" formaction="?acao=salvarBanca">Cadastrar</button>
