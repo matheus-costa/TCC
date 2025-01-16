@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+    }
+    .container {
+        width: 80%;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+    .total {
+        text-align: right;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+    .checkout {
+        display: block;
+        width: 100%;
+        padding: 10px 20px;
+        margin-top: 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-size: 1em;
+        border-radius: 5px;
+    }
+    .checkout:hover {
+        background-color: #45a049;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Carrinho de Compras</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Produto 1</td>
+                    <td>1</td>
+                    <td>R$ 50,00</td>
+                    <td>R$ 50,00</td>
+                </tr>
+                <tr>
+                    <td>Produto 2</td>
+                    <td>2</td>
+                    <td>R$ 30,00</td>
+                    <td>R$ 60,00</td>
+                </tr>
+                <tr>
+                    <td>Produto 3</td>
+                    <td>1</td>
+                    <td>R$ 20,00</td>
+                    <td>R$ 20,00</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="total">Total: R$ 130,00</div>
+        <a href="#" class="checkout">Finalizar Compra</a>
+    </div>
+</body>
+</html>
+
