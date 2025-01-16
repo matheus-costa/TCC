@@ -9,9 +9,13 @@
     include_once '../View/VisaoFornecedor.php';
     include_once '../View/VisaoProduto.php';
     include_once '../View/VisaoVenda.php';
+    include_once '../View/VisaoCarrinho.php';
+    include_once '../View/VisaoItem.php';
     include_once '../View/VisaoLayout.php';
     //MODELS
     include_once '../Model/ModeloBanca.php';
+    include_once '../Model/ModeloCarrinho.php';
+    include_once '../Model/ModeloItem.php';
     include_once '../Model/ModeloPessoa.php';
     include_once '../Model/ModeloFornecedor.php';
     include_once '../Model/ModeloTrabalho.php';
@@ -314,5 +318,57 @@
             $propriedade = $dao->buscarProprietarios();
           //  $banca = $dao->buscarBancas();
             return $visao->cabecalho . $visao->cadastrarPessoas( $pessoa,$propriedade, $trabalho ) . $visao->rodape;
+        }
+
+        function listarItens() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $Itens = $dao->buscarItens();
+            $visao = new VisaoItem();
+            return $visao->cabecalho . $visao->listarItens( $Itens ) . $visao->rodape;
+        }
+
+        function salvarItens( $dados ) {
+
+            $dao = new ObjetoAcessoDados( $this->conexao );
+
+            if ( isset($dados['id']) ) {
+                //$pessoa = $dao->buscarPessoa( $dados['id'] );
+                $item = $dao->buscarItem( $dados['id'] );
+                $item->data_compra = $dados['data_compra'];
+                $item->quantidade = $dados['quantidade'];
+                $item->produto = $dados['produto'];
+                $item->fornecedor = $dao->buscarProduto( $dados['produto'] );
+                $item->banca = $dao->buscarBanca( $dados['banca'] );
+                $item->fornecedor = $dao->buscarFornecedor( $dados['fornecedor'] );
+            } else {
+                $item = new ModeloItem( null, $dados['data_compra'],$dados['quantidade'],$dao->buscarProduto($dados['produto']),$dao->buscarFornecedor($dados['fornecedor']),$dao->buscarBanca($dados['banca']) );
+            }
+            $item = $dao->salvarItem( $item );
+            return $this->listarItens();
+        }
+
+        function removerItem ( $dados ){
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $item = $dao->buscarItem( $dados['id'] );
+            $dao->removerItem( $item);
+            return $this->listarItens();
+        }
+
+        function cadastrarItens() {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $visao = new VisaoItem();
+            $item = $dao->buscarItens();
+            $produtos = $dao->buscarProdutos();
+            $bancas = $dao->buscarBancas();
+            $fornecedores = $dao->buscarFornecedores();
+            return $visao->cabecalho . $visao->cadastrarItens($item,$produtos,$bancas,$fornecedores ) . $visao->rodape;
+        }
+
+        function listarCarrinho(){
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $vendas = $dao->buscarVendas();
+            $visao = new VisaoCarrinho();
+            return $visao->cabecalho . $visao->listarCarrinho($vendas) . $visao->rodape;
+
         }
 }
