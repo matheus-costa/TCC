@@ -20,7 +20,6 @@ create table fornecedor (
 	cnpj varchar NOT NULL,
 	pessoa integer references pessoa(id)
 );
-
 CREATE TABLE produto(  
     id serial primary key NOT NULL,
     nome varchar(200) NOT NULL,
@@ -28,30 +27,26 @@ CREATE TABLE produto(
     marca varchar NOT NULL,
     preco varchar NOT NULL
 );
-
 create table item( 
     id serial primary key NOT NULL,
+	data_compra date NOT NULL,
+	quantidade integer NOT NULL,
     fornecedor integer references fornecedor(id),
     banca integer references banca(id),
 	produto integer references produto(id)
 );
-
-
 create table venda(
     id serial primary key NOT NULL,
-	dataHora date NOT NULL,
+	data_venda date NOT NULL,
     pessoa integer references pessoa(id),
     item integer references item(id)
 );
-
 create table trabalho(
     id serial primary key NOT NULL,
     pessoa integer references pessoa(id),
     banca integer references banca(id)
 
 );
- 
-
 create table propriedade( 
     id serial primary key NOT NULL,
 	cnpj varchar NOT NULL,
@@ -82,9 +77,6 @@ insert into banca values ('2','NikeFake','14');
 
 --Insert de um Item(id, fornecedor, banca, produto)
 insert into item values (default,'2', '1', '2');
-insert into item values ('2','5', '2', '3');
-insert into item values ('1','3', '1', '4');
-insert into item values ('1','4', '1', '5');
 --Insert de um proprietário(id, cnpj,pessoa,banca)
 insert into propriedade values ('2','123456778', '1', '1');
 --insert de uma venda para um cliente(id, pessoa, item)
@@ -95,8 +87,8 @@ insert into trabalho values (default, '2','1');
 --Insert de uma venda(id, pessoa,item);
 insert into venda values(default,'2024-14-12','5','5');
 INSERT INTO venda VALUES (DEFAULT,'2024-12-12', 1, 1);
-INSERT INTO venda (id, dataHora,pessoa, item) VALUES (DEFAULT, '2024-12-12', 1, 1);
-INSERT INTO venda (id, dataHora,pessoa, item) VALUES (DEFAULT, '2024-12-12', 2, 2);
+INSERT INTO venda (id, data_venda,pessoa, item) VALUES (DEFAULT, '2024-12-12', 1, 1);
+INSERT INTO venda (id, data_venda,pessoa, item) VALUES (DEFAULT, '2024-12-12', 2, 2);
 
 
 
@@ -226,7 +218,7 @@ select * from venda;
 
 select id, pessoa, item from venda where id = '3'; --SELECT ANTIGO
 
-select id, dataHora, pessoa, item from venda where id = 5;
+select id, dataHora, pessoa, item from venda where id = 1;
 
 SELECT dataHora, pessoa, item
                            FROM venda
@@ -237,7 +229,24 @@ SELECT dataHora, pessoa, item
                                 ORDER BY venda.id;
 
 
-								SELECT venda.id as id, dataHora, pessoa, item
+								SELECT venda.id as id, venda.dataHora as dataHora, pessoa, item
+                           FROM venda
+                                JOIN item i 
+                                    ON venda.item = i.id
+                                JOIN produto pr 
+                                    ON pr.id = i.produto
+                                ORDER BY id;
+
+
+select * from venda;			
+
+
+select id, TO_CHAR(data_compra, 'dd/mm/yyyy') from item order by id;
+
+
+
+
+SELECT venda.id as id, TO_CHAR(data_venda, 'dd/mm/yyyy') data_venda, pessoa, item
                            FROM venda
                                 JOIN item i 
                                     ON venda.item = i.id
