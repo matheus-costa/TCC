@@ -70,7 +70,6 @@
                         ENDERECO <br/>
                         <input type="text" name="endereco" autocomplete="off" />
                     </p>
-                    
                     <p>
                         <select name ="propriedade">
                             <option hidden>Selecionar Banca</option>
@@ -82,6 +81,7 @@
                             <option value="$propriedades->id">$banca->nome</option>
             HTML;
                             }
+
             $html .= <<<HTML
                         </select>
                     </p>
@@ -90,6 +90,7 @@
                         <select name="trabalho">
                             <option hidden>Selecionar Trabalho</option>
             HTML;
+
             foreach ( $trabalho as $trabalhos ) {
                 $banca = $trabalhos->banca;
             $html .= <<<HTML
