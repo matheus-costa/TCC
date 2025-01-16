@@ -11,7 +11,7 @@
 
         function __construct( $id, $data_venda, ModeloPessoa $pessoa, ModeloItem $item) {
             $this->id = $id;
-            $this->data_venda= $data_venda;
+            $this->data_venda = $data_venda;
             $this->pessoa = $pessoa;
             $this->item = $item;
         }
