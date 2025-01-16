@@ -6,6 +6,8 @@
         <html>
             <head>
                 <meta charset="utf-8" />
+                <link href="carrinho.css" rel="stylesheet"/> 
+
             </head>
             <body>
                 <p>
@@ -14,6 +16,8 @@
                     <a href="?acao=listarFornecedores">Fornecedor</a>
                     <a href="?acao=listarPessoas">Pesssoas</a>
                     <a href="?acao=listarVendas">Vendas</a>
+                    <a href="?acao=listarItens">Itens</a>
+                    <a href="?acao=listarCarrinho">Carrinho de Compras</a>
                 </p>
         HTML;
 
