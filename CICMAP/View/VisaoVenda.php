@@ -6,6 +6,7 @@
 
         function listarVendas( $vendas ) {
             $html = <<<HTML
+                <meta charset="utf-8"/>
                 <h1>Vendas</h1>
                 <table border="1">
                 <tr>
@@ -14,10 +15,7 @@
                     <th> Preço do Produto </th>
                     <th> Nome do Cliente     </th>
                     <th> Data da Venda </th>
-                    <th> Excluir Venda     </th>
-
-
-
+                    <th> Excluir Venda     </th>  
                 </tr>
             HTML;
             foreach ( $vendas as $venda ) {
@@ -45,13 +43,13 @@
             return $html;
         }
 
-        function cadastrarVendas ($pessoa, $item) {
+        function cadastrarVendas ($pessoas, $item) {
             $html = <<<HTML
                 <h1>Cadastrar Venda</h1>
                 <form>
                     <p>
                         Data da venda: <br/>
-                        <input type="text" name="data_venda" autocomplete="off" />
+                        <input type="date" name="data_venda" autocomplete="off" />
                     </p>
                     <p>
                         <select name ="item">
@@ -72,9 +70,9 @@
                         <select name="pessoa">
                             <option hidden>Selecionar Cliente</option>
             HTML;
-            foreach ( $pessoa as $pessoas ) {
+            foreach ( $pessoas as $pessoa ) {
             $html .= <<<HTML
-                            <option value="$pessoas->id">$pessoas->id</option>
+                         <option value="$pessoa->id">$pessoa->id</option>
             HTML;
             }
             $html .= <<<HTML
@@ -84,7 +82,7 @@
            
             $html .= <<<HTML
                     <p>
-                        <button type="submit" formmethod="post" formaction="?acao=salvarVendas">Cadastrar</button>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarVenda">Cadastrar</button>
                     </p>
                 </form>
             HTML;
