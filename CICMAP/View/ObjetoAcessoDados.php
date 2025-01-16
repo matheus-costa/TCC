@@ -4,6 +4,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
 
     // Inclui o arquivo com a classe ModeloClube
     include_once '../Model/ModeloBanca.php';
+    include_once '../Model/ModeloCarrinho.php';
     include_once '../Model/ModeloFornecedor.php';
     include_once '../Model/ModeloTrabalho.php';
     include_once '../Model/ModeloProduto.php';
@@ -105,7 +106,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $endereco = $pessoa->endereco;
 
             if ( is_null( $pessoa->id ) ) {
-                $sql = " insert into pessoa values (default,$nome,$cpf,$rg,$email,$telefone,$endereco) returning id; ";
+                $sql = " insert into pessoa values (default,'$nome','$cpf','$rg','$email','$telefone','$endereco') returning id; ";
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $pessoa->id;
@@ -359,14 +360,14 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return null;
         }
         function buscarItem( $id ) {
-            $sql = " select id, fornecedor, banca, produto from item where id = '$id'; ";
+            $sql = " select id, TO_CHAR(data_compra, 'dd/mm/yyyy') data_compra, quantidade, fornecedor, banca, produto from item where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $item = new ModeloItem($id,$this -> buscarProduto($resultado[0]['produto']), $this->buscarFornecedor($resultado[0]['fornecedor']), $this-> buscarBanca($resultado[0]['banca']) );
+            $item = new ModeloItem($resultado[0]['id'],$resultado[0]['data_compra'], $resultado[0]['quantidade'],$this -> buscarProduto($resultado[0]['produto']), $this->buscarFornecedor($resultado[0]['fornecedor']), $this-> buscarBanca($resultado[0]['banca']) );
             return $item;
         }
 
         function buscarItens() {
-            $sql = " select id from item order by id; ";
+            $sql = " select id, TO_CHAR(data_compra, 'dd/mm/yyyy') data_compra, quantidade, fornecedor, banca, produto from item order by id; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $itens = [];
             foreach ( $resultado as $tupla ) {
@@ -384,9 +385,11 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $Bid = $banca ->id;
             $produto = $item->produto;
             $Pid = $produto->id;
+            $data_compra = $item->data_compra;
+            $quantidade = $item->quantidade;
 
             if ( is_null( $item->id ) ) {
-                $sql = " insert into item values (default,$Fid,$Bid,$Pid) returning id; ";
+                $sql = " insert into item values (default,'$data_compra',$quantidade,$Fid,$Bid,$Pid) returning id; ";
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $item->id;
@@ -404,7 +407,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return null;
         }
         function buscarVenda( $id ) {
-            $sql = " select id, data_venda, pessoa, item from venda where id = '$id'; ";
+            $sql = " select id, TO_CHAR(data_venda, 'dd/mm/yyyy') data_venda, pessoa, item from venda where id = '$id'; ";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $venda = new ModeloVenda($resultado[0]['id'], $resultado[0]['data_venda'],
             $this-> buscarPessoa($resultado[0]['pessoa']), $this->buscarItem($resultado[0]['item']) );
@@ -412,7 +415,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
         }
 
         function buscarVendas() {
-            $sql = "SELECT venda.id as id, data_venda, pessoa, item
+            $sql = " SELECT venda.id as id, TO_CHAR(data_venda, 'dd/mm/yyyy') data_venda, pessoa, item
                            FROM venda
                                 JOIN item i 
                                     ON venda.item = i.id
@@ -436,7 +439,8 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $pid = $pessoa->id;
 
             if ( is_null( $venda->id ) ) {
-                $sql = " insert into venda values (null,$data_venda,$pid,$Iid) returning id; ";
+                $sql = " insert into venda values (default,'$data_venda',$pid,$Iid) returning id; ";
+
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $venda->id;
@@ -453,8 +457,21 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             $this->conexao->exec($sql);
             return null;
         }
- 
-        
+        function listarCarrinho(){
+            $sql = "SELECT venda.id as id, TO_CHAR(data_venda, 'dd/mm/yyyy') data_venda, pessoa, item
+                           FROM venda
+                                JOIN item i 
+                                    ON venda.item = i.id
+                                JOIN produto pr 
+                                    ON pr.id = i.produto
+                                ORDER BY id;";
+            $resultado = $this->conexao->query($sql)->fetchAll( 2 );
+            $vendas = [];
+            foreach ( $resultado as $tupla ) {
+                $vendas[] = $this->buscarVenda($tupla['id'] );
+            }
+            return $vendas;
+        }
     }
 /*  
 
