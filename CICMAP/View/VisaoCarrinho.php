@@ -17,8 +17,9 @@
                                         <th> Preço do Produto </th>
                                         <th> Nome do Cliente     </th>
                                         <th> Data da Venda </th>
+                                        <th> Selecionar Item </th>
                                     </tr>
-                            </div>
+                              </div>
                    </body>
             HTML;
             foreach ( $vendas as $venda ) {
@@ -32,7 +33,7 @@
                         <td>$produto->preco</td>
                         <td>$pessoa->nome</td>
                         <td>$venda->data_venda</td>
-                        <td><a href="?acao=removerVenda&id=$venda->id">Comprar</a></td>
+                        <td><a href="?acao=comprarCarrinho&id=$venda->id">Comprar</a></td>
                     </tr>
                 HTML;
             }
