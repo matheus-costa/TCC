@@ -120,6 +120,12 @@
             $dao->removerProduto( $produto );
             return $this->listarProdutos();
         }
+        function editarProduto ( $dados ){
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $produto = $dao->buscarProduto( $dados['id'] );
+            $dao->editarProduto( $produto );
+            return $this->listarProdutos();
+        }
 
         function cadastrarProduto () {
 
@@ -370,5 +376,11 @@
             $visao = new VisaoCarrinho();
             return $visao->cabecalho . $visao->listarCarrinho($vendas) . $visao->rodape;
 
+        }
+        function comprarCarrinho ( $dados ){
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $banca = $dao->buscarVenda( $dados['id'] );
+            $dao->comprarVenda( $banca );
+            return $this->listarVendas();
         }
 }
