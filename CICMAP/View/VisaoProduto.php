@@ -14,6 +14,8 @@
                     <th> Marca do Produto     </th>
                     <th> Preço do Produto		  </th>
                     <th> Excluir Produto		  </th>
+                    <th> Editar Produto		  </th>
+
                 </tr>
             HTML;
             foreach ( $produtos as $produto ) {
@@ -25,6 +27,7 @@
                         <td>$produto->marca</td>
                         <td>$produto->preco</td>
                         <td><a href="?acao=removerProduto&id=$produto->id">X</a></td>
+                        <td><a href="?acao=editarProduto&id=$produto->id">Y</a></td>
                     </tr>
                 HTML;
             }
