@@ -179,8 +179,11 @@
         function listarVendas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $vendas = $dao->buscarVendas();
+            #$pessoas = $dao->buscarPessoas();
+            #$produto = $dao->buscarProdutos();
+            #$itens = $dao->buscarItens();
             $visao = new VisaoVenda();
-            return $visao->cabecalho . $visao->listarVendas( $vendas ) . $visao->rodape;
+            return $visao->cabecalho . $visao->listarVendas(  $vendas ) . $visao->rodape;
         }
 
         function salvarVenda( $dados ) {
@@ -190,9 +193,8 @@
             if ( isset($dados['id']) ) {
                 $venda = $dao->buscarVenda( $dados['id'] );
                 $venda->data_venda = $dados['data_venda'];
-                $venda->pessoa = $dados['pessoa'];
-                $venda->item = $dados['item'];
-                
+                $venda->pessoa = $dao->buscarPessoas($dados['pessoa']);
+                $venda->item = $dao->buscarItens( $dados['item'] );                
             } else {
                 $venda = new ModeloVenda(null, $dados['data_venda'],$dao->buscarPessoa($dados['pessoa']),$dao->buscarItem($dados['item']) );
             }
@@ -210,10 +212,10 @@
         function cadastrarVendas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $visao = new VisaoVenda();
-            $vendas = $dao->buscarVendas();
-            $itens = $dao->buscarItens();
+            #$vendas = $dao->buscarVendas();
+            $item = $dao->buscarItens();
             $pessoas = $dao->buscarPessoas();
-            return $visao->cabecalho . $visao->cadastrarVendas( $vendas, $itens, $pessoas ) . $visao->rodape;
+            return $visao->cabecalho . $visao->cadastrarVendas( $item, $pessoas ) . $visao->rodape;
         }
 
         function listarFuncionarios() {
@@ -255,8 +257,9 @@
         function listarFornecedores() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $fornecedores = $dao->buscarFornecedores();
+            $pessoas = $dao->buscarPessoas();
             $visao = new VisaoFornecedor();
-            return $visao->cabecalho . $visao->listarFornecedores( $fornecedores ) . $visao->rodape;
+            return $visao->cabecalho . $visao->listarFornecedores( $fornecedores, $pessoas ) . $visao->rodape;
         }
 
         function salvarFornecedores( $dados ) {
@@ -268,7 +271,7 @@
          
 
             } else {
-                $fornecedor = new ModeloFornecedor(null, $dados['cnpj'],$dados['banca']);
+                $fornecedor = new ModeloFornecedor(null, $dados['cnpj'], $dados['pessoa']);
             }
             $fornecedor = $dao->salvarFornecedor( $fornecedor );
             return $this->listarFornecedores();
@@ -285,7 +288,8 @@
             $dao = new ObjetoAcessoDados( $this->conexao );
             $visao = new VisaoFornecedor();
             $fornecedor = $dao->buscarFornecedores();
-            return $visao->cabecalho . $visao->cadastrarFornecedor( $fornecedor ) . $visao->rodape;
+            $pessoas = $dao->buscarPessoas();
+            return $visao->cabecalho . $visao->cadastrarFornecedor( $fornecedor, $pessoas ) . $visao->rodape;
         }
      
         function listarPessoas() {
@@ -342,12 +346,12 @@
                 $item = $dao->buscarItem( $dados['id'] );
                 $item->data_compra = $dados['data_compra'];
                 $item->quantidade = $dados['quantidade'];
-                $item->produto = $dados['produto'];
-                $item->fornecedor = $dao->buscarProduto( $dados['produto'] );
                 $item->banca = $dao->buscarBanca( $dados['banca'] );
                 $item->fornecedor = $dao->buscarFornecedor( $dados['fornecedor'] );
+                $item->produto = $dao->buscarProduto( $dados['produto'] );
+
             } else {
-                $item = new ModeloItem( null, $dados['data_compra'],$dados['quantidade'],$dao->buscarProduto($dados['produto']),$dao->buscarFornecedor($dados['fornecedor']),$dao->buscarBanca($dados['banca']) );
+                $item = new ModeloItem( null, $dados['data_compra'],$dados['quantidade'],$dao->buscarFornecedor($dados['fornecedor']),$dao->buscarBanca($dados['banca']),$dao->buscarProduto($dados['produto']) );
             }
             $item = $dao->salvarItem( $item );
             return $this->listarItens();
