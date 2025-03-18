@@ -8,17 +8,19 @@
         public $id;
         public $data_compra;
         public $quantidade;
-        public $produto;
-        public $banca;
         public $fornecedor;
+        public $banca;
+        public $produto;
 
-        function __construct( $id, $data_compra, $quantidade, ModeloProduto $produto, ModeloFornecedor $fornecedor
-        ,ModeloBanca $banca) {
+        function __construct( $id, $data_compra, $quantidade, ModeloFornecedor $fornecedor
+        ,ModeloBanca $banca,  ModeloProduto $produto) {
             $this->id = $id;
             $this->data_compra = $data_compra;
             $this->quantidade = $quantidade;
-            $this->produto = $produto;
-            $this->banca = $banca;
             $this->fornecedor = $fornecedor;
+            $this->banca = $banca;
+            $this->produto = $produto;
+            
+        
         }
     }
