@@ -24,22 +24,22 @@
             $html .= <<<HTML
                 </table>
                 <p>
-                    <a href="?acao=cadastrarFornecedores">Novo</a>
+                    <a href="?acao=cadastrarFornecedor">Novo</a>
                 </p>
             HTML;
             return $html;
         }
 
-        function cadastrarFornecedor ( array $fornecedor, $pessoas ) {
+        function cadastrarFornecedor ( array $pessoas ) {
             $html = <<<HTML
                 <h1>Cadastrar Fornecedores</h1>
                 <form>
-                    <p>
+               <p>
                         CNPJ <br/>
-                        <input type="text" name="endereco" autocomplete="off" />
+                        <input type="text" name="cnpj" autocomplete="off" />
                     </p>
                   
-                        <select name="pessoa">
+                        <select name="clube">
                             <option hidden>Selecione</option>
             HTML;
             foreach ( $pessoas as $pessoa ) {

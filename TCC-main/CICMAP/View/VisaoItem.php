@@ -46,7 +46,7 @@
             return $html;
         }
 
-        function cadastrarItens ($item,$bancas, $fornecedores) {
+        function cadastrarItens ($item,$bancas, $fornecedores, $produtos) {
             $html = <<<HTML
                 <h1>Cadastrar Itens</h1>
                 <form>    
@@ -58,44 +58,42 @@
                         Quantidade de Produtos: <br/>
                         <input type="number" name="quantidade" autocomplete="off" />
                 </p>
-                <p>
+                <p>Banca<br/>
                         <select name="banca">
                             <option hidden>Selecionar Banca</option>
                 </p>
-            HTML; #FECHO O PRIMEIRO HTML
-            foreach ( $bancas as $banca ) {  #ABRO O FOREACH BANCA
+            HTML; 
+            foreach ( $bancas as $banca ) {
             $html .= <<<HTML
-                            <option value="$banca->nome">$banca->nome</option>
+                            <option value="$banca->id">$banca->id</option>
             HTML;
-                            }#FECHO O FOREACH BANCA
+                            }//seleciona banca
 
             $html .= <<<HTML
                             </select>
+                        </p>
     
-                        <p>
+                        <p>Produto<br/>
                             <select name="produto">
                                 <option hidden>Selecionar Produto</option>
-                        </p>
-
             HTML;
                 
-           foreach ( $item as $itens ) {#ABRO O FOREACH  DOS PRODUTOS
-            $produto = $itens->produto;
+           foreach ( $produtos as $produto ) {
             $html .= <<<HTML
-                            <option value="$produto->nome">$produto->nome</option>
+                            <option value="$produto->id">$produto->nome - $produto->marca - $produto->preco</option>
             HTML;
-                            }#FECHO O FOREACH DOS PRODUTOS
+                            }// seleciona o produto
            
             $html .= <<<HTML
                             </select>
                         </p>
-                        <p>
+                        <p>Fornecedor<br/>
                             <select name="fornecedor">
                                 <option hidden>Selecionar Fornecedor</option>
             HTML;
             foreach ( $fornecedores as $fornecedor ) {
             $html .= <<<HTML
-                            <option value="$fornecedor->nome">$fornecedor->nome</option>
+                            <option value="$fornecedor->id">$fornecedor->id</option>
             HTML;
                             }// seleciona o fornecedor
             $html .= <<<HTML
