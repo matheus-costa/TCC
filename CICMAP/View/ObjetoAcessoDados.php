@@ -360,14 +360,15 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
             return null;
         }
         function buscarItem( $id ) {
-            $sql = " select id, TO_CHAR(data_compra, 'dd/mm/yyyy') data_compra, quantidade, fornecedor, banca, produto from item where id = '$id'; ";
+            $sql = "select id, TO_CHAR(data_compra, 'dd/mm/yyyy') data_compra, quantidade, fornecedor, banca, produto from item where id = '$id';";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
-            $item = new ModeloItem($resultado[0]['id'],$resultado[0]['data_compra'], $resultado[0]['quantidade'],$this -> buscarProduto($resultado[0]['produto']), $this->buscarFornecedor($resultado[0]['fornecedor']), $this-> buscarBanca($resultado[0]['banca']) );
+            $item = new ModeloItem($resultado[0]['id'],$resultado[0]['data_compra'], $resultado[0]['quantidade'],$this->buscarFornecedor($resultado[0]['fornecedor']),$this->buscarBanca($resultado[0]['banca']),$this->buscarProduto($resultado[0]['produto']));
+            
             return $item;
         }
 
         function buscarItens() {
-            $sql = " select id, TO_CHAR(data_compra, 'dd/mm/yyyy') data_compra, quantidade, fornecedor, banca, produto from item order by id; ";
+            $sql = "select id, TO_CHAR(data_compra, 'dd/mm/yyyy') data_compra, quantidade, fornecedor, banca, produto from item order by id;";
             $resultado = $this->conexao->query($sql)->fetchAll( 2 );
             $itens = [];
             foreach ( $resultado as $tupla ) {
