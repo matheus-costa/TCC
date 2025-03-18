@@ -4,7 +4,7 @@
 
     class VisaoVenda extends VisaoLayout {
 
-        function listarVendas( $vendas ) {
+        function listarVendas( $vendas) {
             $html = <<<HTML
                 <meta charset="utf-8"/>
                 <h1>Vendas</h1>
@@ -43,7 +43,7 @@
             return $html;
         }
 
-        function cadastrarVendas ($pessoas, $item) {
+        function cadastrarVendas ($item,$pessoas) {
             $html = <<<HTML
                 <h1>Cadastrar Venda</h1>
                 <form>
@@ -59,7 +59,7 @@
             foreach ( $item as $itens ) {
                 $produto = $itens->produto;
             $html .= <<<HTML
-                            <option value="$produto->id">$produto->nome</option>
+                            <option value="$produto->nome">$produto->nome</option>
             HTML;
                             }
             $html .= <<<HTML
@@ -71,8 +71,9 @@
                             <option hidden>Selecionar Cliente</option>
             HTML;
             foreach ( $pessoas as $pessoa ) {
+                #$pessoa = $itens->pessoa;
             $html .= <<<HTML
-                         <option value="$pessoa->id">$pessoa->id</option>
+                         <option value="$pessoa->nome">$pessoa->nome</option>
             HTML;
             }
             $html .= <<<HTML
