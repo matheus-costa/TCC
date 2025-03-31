@@ -27,7 +27,7 @@
                         <td>$produto->marca</td>
                         <td>$produto->preco</td>
                         <td><a href="?acao=removerProduto&id=$produto->id">X</a></td>
-                        <td><a href="?acao=editarProduto&id=$produto->id">Y</a></td>
+                        <td><a href="?acao=atualizarProduto&id=$produto->id">Y</a></td>
                     </tr>
                 HTML;
             }
@@ -59,6 +59,35 @@
                     <p>
                        Preco: <br/>
                         <input type="text" name="preco" autocomplete="off" />
+                    </p>
+                    <p>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarProduto">Cadastrar</button>
+                    </p>
+                </form>
+            HTML;
+            return $html;
+        }
+        function atualizarProduto( ModeloProduto $produto ) {
+            $html = <<<HTML
+                <h1>Atualizar Produtos</h1>
+                <form>
+                    <input type="hidden" name="id" value="$produto->id" />
+
+                    <p>
+                        Nome <br/>
+                        <input type="text" name="nome" autocomplete="off" value="$produto->nome" />
+                    </p>
+                    <p>
+                        Temanho <br/>
+                        <input type="text" name="tamanho" autocomplete="off" value="$produto->tamanho" />
+                    </p>
+                    <p>
+                        Marca <br/>
+                        <input type="text" name="marca" autocomplete="off" value="$produto->marca" />
+                    </p>
+                    <p>
+                        Preço <br/>
+                        <input type="text" name="preco" autocomplete="off" value="$produto->preco" />
                     </p>
                     <p>
                         <button type="submit" formmethod="post" formaction="?acao=salvarProduto">Cadastrar</button>

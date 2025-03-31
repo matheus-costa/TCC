@@ -12,6 +12,8 @@
                     <th> Nome da Banca            </th>
                     <th> Numeração Banca     </th>
                     <th> Excluir Banca		  </th>
+                    <th> Atualizar Banca		  </th>
+
                 </tr>
             HTML;
             foreach ( $bancas as $banca ) {
@@ -21,6 +23,7 @@
                         <td>$banca->nome</td>
                         <td>$banca->numeracao</td>
                         <td><a href="?acao=removerBanca&id=$banca->id">X</a></td>
+                        <td><a href="?acao=atualizarBanca&id=$banca->id">X</a></td>
                     </tr>
                 HTML;
             }
@@ -47,6 +50,27 @@
                     </p>
                     <p>
                         <button type="submit" formmethod="post" formaction="?acao=salvarBanca">Cadastrar</button>
+                    </p>
+                </form>
+            HTML;
+            return $html;
+        }
+        function atualizarBanca( ModeloBanca $banca ) {
+            $html = <<<HTML
+                <h1>Atualizar Banca</h1>
+                <form>
+                    <input type="hidden" name="id" value="$banca->id" />
+
+                    <p>
+                        nome <br/>
+                        <input type="text" name="nome" autocomplete="off" value="$banca->nome" />
+                    </p>
+                    <p>
+                        nome <br/>
+                        <input type="text" name="numeracao" autocomplete="off" value="$banca->numeracao" />
+                    </p>
+                    <p>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarbanca">Cadastrar</button>
                     </p>
                 </form>
             HTML;

@@ -16,6 +16,8 @@
                     <th> Telefone  da Pessoa </th>
                     <th> Endereço da Pessoa  </th>
                     <th> Excluir  Pessoa    </th>
+                    <th> Atualizar  Pessoa    </th>
+
                 </tr>
             HTML;
             foreach ( $pessoas as $pessoa ) {
@@ -29,6 +31,8 @@
                         <td>$pessoa->telefone</td>
                         <td>$pessoa->endereco</td>
                         <td><a href="?acao=removerPessoa&id=$pessoa->id">X</a></td>
+                        <td><a href="?acao=atualizarPessoa&id=$pessoa->id">Y</a></td>
+
                     </tr>
                 HTML;
             }
@@ -105,6 +109,42 @@
             $html .= <<<HTML
                     </p>
 
+                    <p>
+                        <button type="submit" formmethod="post" formaction="?acao=salvarPessoas">Cadastrar</button>
+                    </p>
+                </form>
+            HTML;
+            return $html;
+        }
+        function atualizarPessoa( ModeloPessoa $pessoa ) {
+            $html = <<<HTML
+                <h1>Atualizar pessoa</h1>
+                <form>
+                    <input type="hidden" name="id" value="$pessoa->id" />
+                    <p>
+                        Nome <br/>
+                        <input type="text" name="nome" autocomplete="off" value="$pessoa->nome" />
+                    </p>
+                    <p>
+                        CPF <br/>
+                        <input type="text" name="cpf" autocomplete="off" value="$pessoa->cpf" />
+                    </p>
+                    <p>
+                        RG <br/>
+                        <input type="text" name="rg" autocomplete="off" value="$pessoa->rg" />
+                    </p>
+                    <p>
+                        E-mail <br/>
+                        <input type="text" name="email" autocomplete="off" value="$pessoa->email" />
+                    </p>
+                    <p>
+                        Telefone <br/>
+                        <input type="text" name="telefone" autocomplete="off" value="$pessoa->telefone" />
+                    </p>
+                    <p>
+                        Encereço <br/>
+                        <input type="text" name="endereco" autocomplete="off" value="$pessoa->endereco" />
+                    </p>
                     <p>
                         <button type="submit" formmethod="post" formaction="?acao=salvarPessoas">Cadastrar</button>
                     </p>
