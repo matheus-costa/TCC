@@ -90,6 +90,12 @@
             // Retorna a visualização do formulário de cadastro com cabeçalho e rodapé
             return $visao->cabecalho . $visao->cadastrarBancas( $banca ) . $visao->rodape;
         }
+        function atualizarBanca( $dados ) {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $banca = $dao->buscarBanca( $dados['id'] );
+            $visao = new VisaoBanca();
+            return $visao->cabecalho . $visao->atualizarBanca( $banca) . $visao->rodape;
+        }
     
         function listarProdutos() {
             $dao = new ObjetoAcessoDados( $this->conexao );      
@@ -120,12 +126,6 @@
             $dao->removerProduto( $produto );
             return $this->listarProdutos();
         }
-        function editarProduto ( $dados ){
-            $dao = new ObjetoAcessoDados( $this->conexao );
-            $produto = $dao->buscarProduto( $dados['id'] );
-            $dao->editarProduto( $produto );
-            return $this->listarProdutos();
-        }
 
         function cadastrarProduto () {
 
@@ -133,6 +133,12 @@
             $produtos = $dao->buscarProdutos();
             $visao = new VisaoProduto();
             return $visao->cabecalho . $visao->cadastrarProdutos( $produtos ) . $visao->rodape;
+        }
+        function atualizarProduto( $dados ) {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $produto = $dao->buscarProduto( $dados['id'] );
+            $visao = new VisaoProduto();
+            return $visao->cabecalho . $visao->atualizarProduto( $produto) . $visao->rodape;
         }
 
         function listarProprietarios() {
@@ -210,13 +216,19 @@
         function cadastrarVendas() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $visao = new VisaoVenda();
-            //$vendas = $dao->buscarVendas();
             $itens = $dao->buscarItens();
             $pessoas = $dao->buscarPessoas();
             //return 'teste';
             return $visao->cabecalho . $visao->cadastrarVendas( $itens, $pessoas ) . $visao->rodape;
         }
-
+        function atualizarVenda( $dados ) {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $venda = $dao->buscarVenda( $dados['id'] );
+            $itens = $dao->buscarItens();
+            $pessoas = $dao->buscarPessoas();
+            $visao = new VisaoVenda();
+            return $visao->cabecalho . $visao->atualizarVenda( $venda, $itens, $pessoas ) . $visao->rodape;
+        }
         function listarFuncionarios() {
             $dao = new ObjetoAcessoDados( $this->conexao );
             $funcionarios = $dao->buscarFuncionarios();
@@ -333,6 +345,12 @@
             $propriedade = $dao->buscarProprietarios();
           //  $banca = $dao->buscarBancas();
             return $visao->cabecalho . $visao->cadastrarPessoas( $pessoa,$propriedade, $trabalho ) . $visao->rodape;
+        }
+        function atualizarPessoa( $dados ) {
+            $dao = new ObjetoAcessoDados( $this->conexao );
+            $pessoa = $dao->buscarPessoa( $dados['id'] );
+            $visao = new VisaoPessoa();
+            return $visao->cabecalho . $visao->atualizarPessoa( $pessoa) . $visao->rodape;
         }
 
         function listarItens() {

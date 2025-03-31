@@ -110,7 +110,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $pessoa->id;
-                $sql = " update pessoa set where nome = '$nome',cpf = '$cpf',rg = '$rg',email = '$email',telefone = '$telefone',endereco = '$endereco' ";
+                $sql = " update pessoa set  nome = '$nome',cpf = '$cpf',rg = '$rg',email = '$email',telefone = '$telefone',endereco = '$endereco' where id = '$id'; ";
                 $this->conexao->exec( $sql );
             }
             $pessoa = $this->buscarPessoa($id);
@@ -443,7 +443,7 @@ ini_set('max_execution_time', 60000);  // Aumenta para 60 segundos
                 $id = $this->conexao->query( $sql )->fetchAll(2)[0]['id'];
             } else {
                 $id = $venda->id;
-                $sql = " update venda set  ";
+                $sql = " update venda set  set data_venda = '$data_venda', pessoa ='$pid', item = '$Iid'  where id = '$id';";
                 $this->conexao->exec( $sql );
             }
             $venda = $this->buscarVenda($id);
